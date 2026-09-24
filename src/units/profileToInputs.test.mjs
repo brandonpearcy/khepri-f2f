@@ -124,6 +124,23 @@ test('template weapon forces dodge, sets DTW and continuous damage', () => {
   assert.ok(r.notes.some((n) => n.includes('Dodge')));
 });
 
+test('active Dodge: PH roll, no damage, reactive still shoots', () => {
+  const dodger = profile({ph: 13, skills: [{id: 40, name: 'Dodge', extra: ['+3']}]});
+  const r = deriveInputs({active: side(dodger, combi, 'dodge'), reactive: side(profile(), combi, '1:', true), rangeCm: 40});
+  assert.equal(r.ok, true, r.errors.join('; '));
+  assert.equal(r.inputs.ammoA, 'DODGE');
+  assert.equal(r.inputs.burstA, 1);
+  assert.equal(r.inputs.successValueA, 16);
+  assert.equal(r.inputs.dtwVsDodge, false);
+  assert.equal(r.inputs.successValueB, 15);   // 12 + 3 range, dodger not in cover
+  assert.equal(r.inputs.burstB, 1);
+  assert.equal(r.inputs.armA, 2);
+  assert.deepEqual(pseudoWeapons(dodger, effectiveTraits(dodger, combi), 'A').map((w) => w.key), ['dodge']);
+  assert.deepEqual(pseudoWeapons(dodger, effectiveTraits(dodger, combi), 'B').map((w) => w.key), ['dodge', 'none']);
+  const vsTemplate = deriveInputs({active: side(dodger, combi, 'dodge'), reactive: side(profile(), option([{id: 3, name: 'Heavy Flamethrower'}]), '3:'), rangeCm: 20});
+  assert.equal(vsTemplate.ok, false);
+});
+
 test('reactive burst: total reaction keeps weapon burst, "none" is unopposed', () => {
   const hmg = option([{id: 7, name: 'Heavy Machine Gun'}]);
   const rem = profile({skills: [{id: 61, name: 'Total Reaction'}]});

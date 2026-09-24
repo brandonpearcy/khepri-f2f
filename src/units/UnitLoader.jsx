@@ -92,11 +92,10 @@ function UnitLoader({calculate, onApply}) {
   const previewsA = usePreviewWounds(candidatesA, calculate);
   const previewsB = usePreviewWounds(candidatesB, calculate);
 
-  // Dodge / No ARO only exist on the reactive side; drop them so the new
-  // active side auto-picks its first BS weapon.
+  // "No ARO" only exists on the reactive side; drop it so the new active side
+  // auto-picks its first BS weapon. Dodge is valid on both sides.
   const swapSides = () => {
-    const pseudo = selB.weaponKey === 'dodge' || selB.weaponKey === 'none';
-    setSelA({...selB, weaponKey: pseudo ? null : selB.weaponKey});
+    setSelA({...selB, weaponKey: selB.weaponKey === 'none' ? null : selB.weaponKey});
     setSelB(selA);
   };
 

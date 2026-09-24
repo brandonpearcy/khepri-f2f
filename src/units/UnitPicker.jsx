@@ -6,7 +6,6 @@ import {
   FormControlLabel,
   Grid,
   InputLabel,
-  ListSubheader,
   MenuItem,
   Select,
   TextField,
@@ -101,7 +100,7 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
   const labels = useMemo(() => (group ? loadoutLabels(group, army.weapons) : []), [group, army.weapons]);
   const weapons = useMemo(() => (option ? bsWeapons(option, army.weapons) : []), [option, army.weapons]);
   const pseudo = useMemo(
-    () => (variant === 'reactive' && profile ? pseudoWeapons(profile, effectiveTraits(profile, option)) : []),
+    () => (profile ? pseudoWeapons(profile, effectiveTraits(profile, option), variant === 'active' ? 'A' : 'B') : []),
     [variant, profile, option],
   );
 
@@ -277,13 +276,11 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
             onChange={(key) => set({weaponKey: key})}
           >
             {[
-              <ListSubheader key="bs">BS weapons</ListSubheader>,
               ...weapons.map((w) => (
                 <MenuItem key={w.key} value={w.key}>
                   {`${w.label} · ${rangeText(w.row, rangeCm)}${previewText(previews?.[w.key])}`}
                 </MenuItem>
               )),
-              ...(pseudo.length > 0 ? [<ListSubheader key="other">Other</ListSubheader>] : []),
               ...pseudo.map((w) => <MenuItem key={w.key} value={w.key}>{w.label}</MenuItem>),
             ]}
           </SelectField>

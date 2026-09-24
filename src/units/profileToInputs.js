@@ -139,11 +139,11 @@ export function dodgeSuccessValue(profile, traits) {
 }
 
 // Reactive-only choices that are not weapons.
-export function pseudoWeapons(profile, traits) {
-  return [
-    {key: 'dodge', pseudo: 'dodge', label: `Dodge (PH ${dodgeSuccessValue(profile, traits)})`},
-    {key: 'none', pseudo: 'none', label: 'No ARO (unopposed)'},
-  ];
+// Dodge is valid for both sides; "No ARO" only makes sense for the reactive one.
+export function pseudoWeapons(profile, traits, side = 'B') {
+  const list = [{key: 'dodge', pseudo: 'dodge', label: `Dodge (PH ${dodgeSuccessValue(profile, traits)})`}];
+  if (side === 'B') list.push({key: 'none', pseudo: 'none', label: 'No ARO (unopposed)'});
+  return list;
 }
 
 // BS MOD of a weapon at the chosen distance; null when out of range.
@@ -200,7 +200,7 @@ export function resolveSelection(army, sel) {
   let weapon = null;
   if (option && profile && sel.weaponKey) {
     weapon = bsWeapons(option, army.weapons).find((w) => w.key === sel.weaponKey)
-      ?? pseudoWeapons(profile, traits).find((w) => w.key === sel.weaponKey)
+      ?? pseudoWeapons(profile, traits, 'B').find((w) => w.key === sel.weaponKey)
       ?? null;
   }
   return {unit, factionId, groups, group, profile, option, traits, weapon, inCover: Boolean(sel.inCover)};
@@ -360,14 +360,30 @@ export function deriveInputs({active, reactive, rangeCm}) {
   const b = reactive?.profile ? reactive : null;
   const aTemplate = Boolean(a?.weapon?.row && isTemplate(a.weapon.row));
 
+  const bTemplate = Boolean(b?.weapon?.row && isTemplate(b.weapon.row));
+
   if (a) {
-    if (!a.weapon) errors.push('Active: choose a weapon');
-    else if (a.weapon.pseudo) errors.push('Active: choose a BS weapon');
-    else if ((a.profile.bs ?? 0) <= 0) errors.push('Active: this profile cannot make BS attacks');
-    else Object.assign(inputs, attackInputs(a, b, rangeCm, 'A', errors, notes));
+    if (!a.weapon) {
+      errors.push('Active: choose a weapon or Dodge');
+    } else if (a.weapon.pseudo === 'dodge') {
+      // The calculator only models templates against a dodging *reactive* trooper.
+      if (bTemplate) errors.push('Active Dodge against a reactive template weapon is not supported');
+      inputs.ammoA = 'DODGE';
+      inputs.burstA = 1;
+      inputs.bonusBurstA = 0;
+      inputs.successValueA = dodgeSuccessValue(a.profile, a.traits);
+      inputs.contA = false;
+      inputs.dtwVsDodge = false;
+    } else if (a.weapon.pseudo) {
+      errors.push('Active: choose a BS weapon or Dodge');
+    } else if ((a.profile.bs ?? 0) <= 0) {
+      errors.push('Active: this profile cannot make BS attacks; pick Dodge');
+    } else {
+      Object.assign(inputs, attackInputs(a, b, rangeCm, 'A', errors, notes));
+      inputs.dtwVsDodge = aTemplate;
+    }
     if (b?.weapon?.row) Object.assign(inputs, defenseInputs(a, b.weapon, 'A'));
     else if (b) Object.assign(inputs, defenseInputs(a, null, 'A'));
-    if (a.weapon && !a.weapon.pseudo) inputs.dtwVsDodge = aTemplate;
   }
 
   if (b) {
