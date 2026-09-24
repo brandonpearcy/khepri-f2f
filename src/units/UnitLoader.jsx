@@ -19,7 +19,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import EditIcon from '@mui/icons-material/Edit';
 import PropTypes from 'prop-types';
 import UnitPicker, {EMPTY_SELECTION} from './UnitPicker.jsx';
-import {RANGE_BANDS, deriveInputs, matchupTraits, resolveSelection} from './profileToInputs.js';
+import {RANGE_BANDS, deriveInputs, matchupTraits, resolveSelection, searchKey} from './profileToInputs.js';
 import {previewCandidates} from './previews.js';
 import usePreviewWounds from './usePreviewWounds.js';
 
@@ -60,7 +60,10 @@ function UnitLoader({calculate, onApply}) {
     if (loading.current) return;
     loading.current = true;
     import('../data/army.json')
-      .then((m) => setArmy(m.default))
+      .then((m) => {
+        const units = m.default.units.map((u) => ({...u, search: searchKey(u.isc)}));
+        setArmy({...m.default, units});
+      })
       .catch((e) => setLoadError(e));
   }, []);
 

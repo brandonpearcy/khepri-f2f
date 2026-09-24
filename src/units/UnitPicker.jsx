@@ -11,11 +11,18 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import {createFilterOptions} from '@mui/material/Autocomplete';
 import {useTheme} from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import {twoDecimalPlaces} from '../display/DataTransform.js';
-import {SKILL, bsWeapons, effectiveTraits, loadoutLabels, pseudoWeapons, rangeModFor} from './profileToInputs.js';
+import {
+  SKILL,
+  bsWeapons,
+  effectiveTraits,
+  loadoutLabels,
+  pseudoWeapons,
+  rangeModFor,
+  searchKey,
+} from './profileToInputs.js';
 
 export const EMPTY_SELECTION = {
   unitId: null,
@@ -27,7 +34,11 @@ export const EMPTY_SELECTION = {
   inCover: false,
 };
 
-const filterOptions = createFilterOptions({stringify: (u) => `${u.isc} ${u.name ?? ''}`});
+// Match the ISC only, ignoring case and accents (`search` is built at load).
+const filterOptions = (units, {inputValue}) => {
+  const q = searchKey(inputValue.trim());
+  return units.filter((u) => u.search.includes(q));
+};
 
 // Labels carry a lot of detail (weapon · B · PS · range · W/order), so on
 // phones shrink the text and let rows wrap instead of truncating.

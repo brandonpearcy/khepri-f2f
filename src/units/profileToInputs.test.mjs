@@ -12,6 +12,7 @@ import {
   pseudoWeapons,
   rangeModFor,
   resolveSelection,
+  searchKey,
 } from './profileToInputs.js';
 
 const RIFLE_RANGES = [{to: 40, mod: 3}, {to: 80, mod: -3}, {to: 120, mod: -6}];
@@ -278,4 +279,10 @@ test('Hatamoto plasma vs Sierra Dronbot HMG at 8-16"', () => {
   assert.equal(r.inputs.successValueB, sierra.byFaction['107'].groups[0].profiles[0].bs + hmg.row.ranges[1].mod - 6);
   assert.equal(r.inputs.armA, 2 + 3);               // Nanoscreen on saves
   assert.equal(r.inputs.armB, sierraGroup.profiles[0].arm + 3);
+});
+
+test('searchKey folds case and accents', () => {
+  assert.equal(searchKey('Nøkken'), 'nokken');
+  assert.equal(searchKey('Kōsuke ÉLITE'), 'kosuke elite');
+  assert.equal(searchKey('Ǎnzhàn'), 'anzhan');
 });
