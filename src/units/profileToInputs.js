@@ -221,7 +221,21 @@ export function loadoutLabels(group, weapons) {
   return labels.map((l) => (counts.get(l.label) > 1 ? {...l, label: `${l.label} #${l.id}`} : l));
 }
 
-// Resolves a picker selection (ids) against the army data.
+// Some loadouts replace a stat, listed as an option skill like "BS=12"
+// (Konduktor FTO, Polaris Bearpode Beta) or "BTS=3" (Alguacil Gatta).
+const STAT_FIELDS = {MOV: 'move', CC: 'cc', BS: 'bs', PH: 'ph', WIP: 'wip', ARM: 'arm', BTS: 'bts', W: 'w', STR: 'str', S: 's'};
+export function applyStatOverrides(profile, option) {
+  let out = profile;
+  for (const s of option?.skills ?? []) {
+    const m = /^([A-Z]+)=(\d+)$/.exec(s.name ?? '');
+    const field = m && STAT_FIELDS[m[1]];
+    if (field) out = {...out, [field]: Number(m[2])};
+  }
+  return out;
+}
+
+// Resolves a picker selection (ids) against the army data. The returned
+// profile has the loadout's stat overrides applied.
 export function resolveSelection(army, sel) {
   if (!army || !sel?.unitId) return null;
   const unit = army.units.find((u) => u.id === sel.unitId);
@@ -229,8 +243,9 @@ export function resolveSelection(army, sel) {
   const factionId = sel.factionId ?? (unit.inFactions.length === 1 ? unit.inFactions[0] : null);
   const groups = factionId ? unit.byFaction[factionId]?.groups ?? null : null;
   const group = groups?.find((g) => g.id === sel.groupId) ?? (groups?.length === 1 ? groups[0] : null);
-  const profile = group?.profiles.find((p) => p.id === sel.profileId) ?? (group?.profiles.length === 1 ? group.profiles[0] : null);
+  const baseProfile = group?.profiles.find((p) => p.id === sel.profileId) ?? (group?.profiles.length === 1 ? group.profiles[0] : null);
   const option = group?.options.find((o) => o.id === sel.optionId) ?? null;
+  const profile = baseProfile ? applyStatOverrides(baseProfile, option) : null;
   const traits = profile ? effectiveTraits(profile, option) : null;
   let weapon = null;
   if (option && profile && sel.weaponKey) {
@@ -340,6 +355,15 @@ function attackBonuses(x) {
   };
 }
 
+// Weapons with the BS Weapon (PH) / (WIP) trait roll against that attribute
+// instead of BS (e.g. Grenades, Flash Pulse). BS MODs still apply.
+export function attackStat(profile, row) {
+  const props = row?.props ?? [];
+  if (props.includes('BS Weapon (PH)')) return profile?.ph ?? 0;
+  if (props.includes('BS Weapon (WIP)')) return profile?.wip ?? 0;
+  return profile?.bs ?? 0;
+}
+
 // Only Total Reaction / Neurocinetics keep their full burst in ARO.
 const keepsAroBurst = (x) => hasSkill(x.traits, SKILL.TOTAL_REACTION) || hasSkill(x.traits, SKILL.NEUROCINETICS);
 
@@ -356,7 +380,7 @@ function attackInputs(x, y, rangeCm, side, errors, notes) {
   const albedo = y ? albedoMod(y.traits, x.traits) : 0;
   const cover = benefitsFromCover(y) || hasNanoscreen(y) ? -3 : 0;
   const bonus = attackBonuses(x);
-  const sv = clamp(LIMITS.successValue, x.profile.bs + rangeMod + mim + albedo + cover + mods.sv + bonus.bs);
+  const sv = clamp(LIMITS.successValue, attackStat(x.profile, row) + rangeMod + mim + albedo + cover + mods.sv + bonus.bs);
 
   let burst = (row.burst ?? 1) + bonus.burst;
   if (side === 'B' && !keepsAroBurst(x)) burst = 1;
@@ -464,7 +488,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
       inputs.dtwVsDodge = false;
     } else if (a.weapon.pseudo) {
       errors.push('Active: choose a BS weapon or Dodge');
-    } else if ((a.profile.bs ?? 0) <= 0) {
+    } else if (attackStat(a.profile, a.weapon.row) <= 0) {
       errors.push('Active: this profile cannot make BS attacks; pick Dodge');
     } else {
       Object.assign(inputs, attackInputs(a, b, rangeCm, 'A', errors, notes));
@@ -487,7 +511,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
     } else if (b.weapon.pseudo === 'none') {
       inputs.burstB = 0;
       inputs.bonusBurstB = 0;
-    } else if ((b.profile.bs ?? 0) <= 0) {
+    } else if (attackStat(b.profile, b.weapon.row) <= 0) {
       errors.push('Reactive: this profile cannot make BS attacks; pick Dodge or No ARO');
     } else {
       Object.assign(inputs, attackInputs(b, a, rangeCm, 'B', errors, notes));

@@ -13,6 +13,8 @@ import {
   rangeModFor,
   resolveSelection,
   searchKey,
+  applyStatOverrides,
+  attackStat,
 } from './profileToInputs.js';
 
 const RIFLE_RANGES = [{to: 40, mod: 3}, {to: 80, mod: -3}, {to: 120, mod: -6}];
@@ -347,4 +349,36 @@ test('loadout labels: no pts/SWC, same-playing loadouts collapse, extras disambi
     {id: 1, label: 'Combi Rifle'},
     {id: 3, label: 'Combi Rifle (+1B)'},
   ]);
+});
+
+test('loadout stat overrides (BS=11, BTS=3) replace the profile stat', () => {
+  const p = profile({bs: 5, bts: 0});
+  const o = option([], {skills: [{id: 279, name: 'BS=11'}, {id: 280, name: 'BTS=3'}]});
+  const q = applyStatOverrides(p, o);
+  assert.equal(q.bs, 11);
+  assert.equal(q.bts, 3);
+  assert.equal(p.bs, 5);                        // original untouched
+
+  const polaris = byIsc('Polaris Team');
+  const f = polaris.inFactions[0];
+  const group = polaris.byFaction[f].groups.find((g) => g.options.some((x) => x.skills.some((sk) => sk.name === 'BS=11')));
+  const beta = group.options.find((x) => x.skills.some((sk) => sk.name === 'BS=11'));
+  const r = resolveSelection(army, {unitId: polaris.id, factionId: f, groupId: group.id, optionId: beta.id});
+  assert.equal(r.profile.bs, 11);
+});
+
+test('BS Weapon (PH) / (WIP) roll against PH / WIP', () => {
+  const p = profile({bs: 5, ph: 16, wip: 12});
+  assert.equal(attackStat(p, {props: ['BS Weapon (PH)']}), 16);
+  assert.equal(attackStat(p, {props: ['BS Weapon (WIP)']}), 12);
+  assert.equal(attackStat(p, {props: []}), 5);
+
+  const polaris = byIsc('Polaris Team');
+  const f = polaris.inFactions[0];
+  const group = polaris.byFaction[f].groups.find((g) => g.profiles[0].ph === 16);
+  const o = group.options[0];
+  const grenades = bsWeapons(o, army.weapons).find((w) => w.name === 'Grenades');
+  const x = resolveSelection(army, {unitId: polaris.id, factionId: f, groupId: group.id, optionId: o.id, weaponKey: grenades.key});
+  const r = deriveInputs({active: x, reactive: null, rangeCm: 20}).inputs;
+  assert.equal(r.successValueA, 16 + rangeModFor(grenades.row, 20));
 });
