@@ -11,7 +11,7 @@ const sierra = byIsc('Sierra Dronbot');
 const sierraOption = sierra.byFaction['107'].groups[0].options[0];
 const hmgKey = bsWeapons(sierraOption, army.weapons).find((w) => /Machine Gun/.test(w.name)).key;
 
-const selA = {unitId: hatamoto.id, optionId: 1, weaponKey: '111:Hit Mode', inCover: false};
+const selA = {unitId: hatamoto.id, factionId: 1102, optionId: 1, weaponKey: '111:Hit Mode', inCover: false};
 const selB = {unitId: sierra.id, factionId: 107, optionId: sierraOption.id, weaponKey: hmgKey, inCover: false};
 
 test('candidates cover every BS weapon of the loadout with full params', () => {

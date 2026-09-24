@@ -252,7 +252,7 @@ test('Hatamoto: six distinguishable loadouts and only BS weapons listed', () => 
 
 test('matchupTraits lists only the traits the converter uses', () => {
   const hatamoto = byIsc('Hatamoto Imperial Guard');
-  const active = resolveSelection(army, {unitId: hatamoto.id, optionId: 1, weaponKey: '111:Hit Mode', inCover: true});
+  const active = resolveSelection(army, {unitId: hatamoto.id, factionId: 1102, optionId: 1, weaponKey: '111:Hit Mode', inCover: true});
   assert.deepEqual(matchupTraits(active), ['Mimetism (-3)', 'No Cover', 'Nanoscreen', 'X Visor']);
   const plain = side(profile({arm: 3}), combi, '1:', true);
   assert.deepEqual(matchupTraits(plain), ['In cover']);
@@ -263,7 +263,7 @@ test('matchupTraits lists only the traits the converter uses', () => {
 test('Hatamoto plasma vs Sierra Dronbot HMG at 8-16"', () => {
   const hatamoto = byIsc('Hatamoto Imperial Guard');
   const sierra = byIsc('Sierra Dronbot');
-  const active = resolveSelection(army, {unitId: hatamoto.id, optionId: 1, weaponKey: '111:Hit Mode'});
+  const active = resolveSelection(army, {unitId: hatamoto.id, factionId: 1102, optionId: 1, weaponKey: '111:Hit Mode'});
   const sierraGroup = sierra.byFaction['107'].groups[0];
   const hmg = bsWeapons(sierraGroup.options[0], army.weapons).find((w) => /Machine Gun/.test(w.name));
   const reactive = resolveSelection(army, {unitId: sierra.id, factionId: 107, optionId: sierraGroup.options[0].id, weaponKey: hmg.key, inCover: true});

@@ -147,6 +147,9 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
   });
 
   const factionName = (id) => army.factions[id]?.name ?? `Faction ${id}`;
+  // Units like Fusiliers sit in half a dozen factions; keep the row short.
+  const factionCaption = (ids) =>
+    ids.length > 2 ? `${factionName(ids[0])} +${ids.length - 1}` : ids.map(factionName).join(', ');
 
   return (
     <Grid container spacing={1.5} ref={rootRef}>
@@ -186,7 +189,7 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
               <li key={u.id} {...rest}>
                 {u.isc}
                 <Typography variant="caption" color="text.secondary" sx={{ml: 1}}>
-                  {u.inFactions.map(factionName).join(', ')}
+                  {factionCaption(u.inFactions)}
                 </Typography>
               </li>
             );

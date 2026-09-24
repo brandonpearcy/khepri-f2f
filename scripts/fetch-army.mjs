@@ -14,7 +14,21 @@ import {fileURLToPath} from 'node:url';
 
 const API = 'https://api.corvusbelli.com/army';
 const HEADERS = {Origin: 'https://infinityuniverse.com', Accept: 'application/json'};
-const DEFAULT_FACTIONS = [1102, 107];
+// Every vanilla army and sectorial. Reinforcements groups (ids ending in 99)
+// and the Contracted Back-Up pseudo-factions (998/999) are left out.
+const DEFAULT_FACTIONS = [
+  101, 102, 103, 104, 105, 106, 107,       // PanOceania
+  201, 202, 204, 205,                      // Yu Jing
+  301, 302, 303, 304, 305, 306,            // Ariadna
+  401, 402, 403, 404,                      // Haqqislam
+  501, 502, 503, 504,                      // Nomads
+  601, 602, 603, 604, 605,                 // Combined Army
+  701, 702, 703,                           // ALEPH
+  801,                                     // Tohaa
+  901, 902, 904, 905, 908, 909,            // Non-Aligned Armies
+  1001, 1002, 1003,                        // O-12
+  1101, 1102, 1103,                        // JSA
+];
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'src', 'data', 'army.json');
 
