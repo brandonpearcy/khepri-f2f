@@ -16,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import PropTypes from 'prop-types';
 import UnitPicker from './UnitPicker.jsx';
-import {RANGE_BANDS, matchupTraits} from './profileToInputs.js';
+import {matchupTraits} from './profileToInputs.js';
 
 // "HATAMOTO Plasma Carbine (Hit)" for the collapsed summary: the loadout's
 // short name from Army, then the weapon.
@@ -48,13 +48,12 @@ SideLine.propTypes = {
   color: PropTypes.string.isRequired,
 };
 
-// Unit pickers, range and swap/minify/reset. State lives in useMatchup (App).
+// Unit pickers and swap/minify/reset. State lives in useMatchup (App).
 function UnitLoader({matchup}) {
-  const {army, loadError, rangeCm, collapsed, setCollapsed, derived, hasSelection, swapSides, reset} = matchup;
+  const {army, loadError, collapsed, setCollapsed, derived, hasSelection, swapSides, reset} = matchup;
   const resolvedA = matchup.A.resolved;
   const resolvedB = matchup.B.resolved;
 
-  const rangeLabel = RANGE_BANDS.find((b) => b.to === rangeCm)?.label ?? `${rangeCm} cm`;
 
   // Above the pickers when the columns stack.
   const swapButton = (
@@ -105,7 +104,6 @@ function UnitLoader({matchup}) {
                   <SideLine resolved={resolvedB} role="B" color="reactive.500" />
                 </Box>
               </Stack>
-              <Typography variant="body2" color="text.secondary" sx={{mt: 1}}>Range: {rangeLabel}</Typography>
             </Box>
             <Tooltip title="Edit matchup">
               <IconButton
