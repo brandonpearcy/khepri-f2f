@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fetch-army": "node --no-warnings scripts/fetch-army.mjs 1102 107",
+    "test:units": "node --test src/units/"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

@@ -1,0 +1,223 @@
+#!/usr/bin/env node
+// Fetches unit data for the given faction ids from Corvus Belli's Army API and
+// writes a compact, name-resolved snapshot to src/data/army.json.
+//
+//   node scripts/fetch-army.mjs 1102 107
+//
+// The API rejects requests without an `Origin: https://infinityuniverse.com`
+// header, which browsers cannot set, so this runs as a build-time script and
+// the output is committed.
+
+import {mkdir, writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const API = 'https://api.corvusbelli.com/army';
+const HEADERS = {Origin: 'https://infinityuniverse.com', Accept: 'application/json'};
+const DEFAULT_FACTIONS = [1102, 107];
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const OUT = path.join(ROOT, 'src', 'data', 'army.json');
+
+const args = process.argv.slice(2);
+// Every faction file also carries the ~50-unit mercenary pool the Army app
+// offers as hireable extras (factions: [], canonical: 1, id >= 10000,
+// slug "merc-..."). Those are not part of the faction's roster; skip them
+// unless --mercs is passed.
+const includeMercs = args.includes('--mercs');
+const factionIds = args.map(Number).filter(Number.isInteger);
+const wanted = factionIds.length > 0 ? factionIds : DEFAULT_FACTIONS;
+
+async function get(url) {
+  const res = await fetch(url, {headers: HEADERS});
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
+  return res.json();
+}
+
+const clean = (s) => (typeof s === 'string' ? s.replace(/\s+/g, ' ').trim() || null : null);
+const int = (s) => {
+  if (s === null || s === undefined || s === '') return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+};
+
+const unresolved = new Set();
+function makeResolver(label, ...tables) {
+  const map = new Map();
+  for (const table of tables) {
+    for (const row of table ?? []) {
+      if (!map.has(row.id)) map.set(row.id, clean(row.name) ?? String(row.id));
+    }
+  }
+  return (id) => {
+    if (map.has(id)) return map.get(id);
+    unresolved.add(`${label}:${id}`);
+    return String(id);
+  };
+}
+
+function compactWeapons(rows, ammoName) {
+  const table = {};
+  for (const w of rows) {
+    if (w.type !== 'WEAPON') continue;
+    const dist = w.distance ?? {};
+    const ranges = ['short', 'med', 'long', 'max']
+      .map((band) => dist[band])
+      .filter((b) => b && b.max !== null && b.max !== undefined)
+      .map((b) => ({to: b.max, mod: int(b.mod) ?? 0}))
+      .sort((a, b) => a.to - b.to);
+    (table[w.id] ??= []).push({
+      name: clean(w.name),
+      mode: clean(w.mode),
+      ammo: Number(w.ammunition) > 0 ? ammoName(w.ammunition) : null,
+      burst: int(w.burst),
+      dmg: int(w.damage),
+      saving: clean(w.saving) ?? '',
+      saves: clean(w.savingNum) ?? '',
+      props: w.properties ?? [],
+      ranges: ranges.length > 0 ? ranges : null,
+    });
+  }
+  return table;
+}
+
+function refs(list, resolve, extraName) {
+  return (list ?? [])
+    .filter((x) => x && x.id !== null && x.id !== undefined)
+    .map((x) => {
+      const ref = {id: x.id, name: resolve(x.id)};
+      const extra = (x.extra ?? []).map(extraName).filter(Boolean);
+      if (extra.length > 0) ref.extra = extra;
+      return ref;
+    });
+}
+
+async function main() {
+  const metadata = await get(`${API}/infinity/en/metadata`);
+  const factionFiles = new Map();
+  for (const id of wanted) {
+    const file = await get(`${API}/units/en/${id}`);
+    if (!Array.isArray(file.units) || file.units.length === 0) {
+      throw new Error(`Faction ${id} returned no units (unknown faction id?)`);
+    }
+    factionFiles.set(id, file);
+  }
+  const files = [...factionFiles.values()];
+  const filterTables = (key) => files.map((f) => f.filters?.[key]);
+
+  const skillName = makeResolver('skill', metadata.skills, ...filterTables('skills'));
+  const equipName = makeResolver('equip', metadata.equips, ...filterTables('equip'));
+  // DISTANCE extras are centimetres (e.g. Dodge "+5"); show them in inches so
+  // they are not mistaken for attribute MODs.
+  const extraRows = filterTables('extras').flat().filter(Boolean).map((e) => {
+    const name = clean(e.name);
+    if (e.type !== 'DISTANCE') return {id: e.id, name};
+    const cm = Number(name);
+    const inches = Number.isFinite(cm) && cm % 2.5 === 0 ? `${cm > 0 ? '+' : ''}${cm / 2.5}"` : `${name}cm`;
+    return {id: e.id, name: inches};
+  });
+  const extraName = makeResolver('extra', extraRows);
+  const ammoName = makeResolver('ammo', metadata.ammunitions, ...filterTables('ammunition'));
+  const typeName = makeResolver('type', ...filterTables('type'));
+  const categoryName = makeResolver('category', ...filterTables('category'));
+  const weaponRows = metadata.weapons.filter((w) => w.type === 'WEAPON');
+  const weaponName = makeResolver('weapon', weaponRows, ...filterTables('weapons'));
+
+  const weapons = compactWeapons(metadata.weapons, ammoName);
+  const metaFactions = new Map(metadata.factions.map((f) => [f.id, f]));
+
+  const factions = {};
+  const units = new Map();
+  for (const [fid, file] of factionFiles) {
+    const meta = metaFactions.get(fid);
+    factions[fid] = {
+      id: fid,
+      name: clean(meta?.name) ?? `Faction ${fid}`,
+      slug: meta?.slug ?? null,
+      parent: meta?.parent ?? null,
+      version: file.version ?? null,
+    };
+
+    const ids = new Set(file.units.map((u) => u.id));
+    let dropped = 0;
+    for (const u of file.units) {
+      const native = (u.factions ?? []).includes(fid);
+      if (!native && !includeMercs) {
+        dropped += 1;
+        continue;
+      }
+      // A mercenary-pool copy of a native unit lives under id + 10000; fold it
+      // onto the base id so it merges with the real unit.
+      const isMercCopy = !native && u.id >= 10000;
+      if (isMercCopy && ids.has(u.id - 10000)) continue;
+      const unitId = isMercCopy ? u.id - 10000 : u.id;
+      const groups = (u.profileGroups ?? []).map((g) => ({
+        id: g.id,
+        isc: clean(g.isc),
+        category: g.category ? categoryName(g.category) : null,
+        profiles: (g.profiles ?? []).map((p) => ({
+          id: p.id,
+          name: clean(p.name),
+          type: p.type === null || p.type === undefined ? null : typeName(p.type),
+          move: p.move ?? null,
+          cc: p.cc,
+          bs: p.bs,
+          ph: p.ph,
+          wip: p.wip,
+          arm: p.arm,
+          bts: p.bts,
+          w: p.w,
+          str: Boolean(p.str),
+          s: p.s,
+          ava: p.ava,
+          skills: refs(p.skills, skillName, extraName),
+          equip: refs(p.equip, equipName, extraName),
+          weapons: refs(p.weapons, weaponName, extraName),
+        })),
+        options: (g.options ?? []).map((o) => ({
+          id: o.id,
+          name: clean(o.name),
+          points: o.points,
+          swc: clean(o.swc === null || o.swc === undefined ? null : String(o.swc)) ?? '0',
+          weapons: refs(o.weapons, weaponName, extraName),
+          skills: refs(o.skills, skillName, extraName),
+          equip: refs(o.equip, equipName, extraName),
+        })),
+      }));
+
+      const existing = units.get(unitId);
+      const unit = existing ?? {
+        id: unitId,
+        isc: clean(u.isc) ?? clean(u.name) ?? String(unitId),
+        name: clean(u.name),
+        slug: u.slug ?? null,
+        inFactions: [],
+        byFaction: {},
+      };
+      unit.inFactions.push(fid);
+      unit.byFaction[fid] = {groups};
+      units.set(unitId, unit);
+    }
+    console.log(`${factions[fid].name} (${fid}): ${file.units.length - dropped} units, version ${file.version}` +
+      (dropped ? `, skipped ${dropped} mercenary-pool units` : ''));
+  }
+
+  const data = {
+    generatedAt: new Date().toISOString(),
+    source: 'https://api.corvusbelli.com/army (Corvus Belli, Infinity Army). Unofficial snapshot.',
+    factions,
+    units: [...units.values()].sort((a, b) => a.isc.localeCompare(b.isc)),
+    weapons,
+  };
+
+  await mkdir(path.dirname(OUT), {recursive: true});
+  await writeFile(OUT, JSON.stringify(data, null, 1) + '\n');
+  console.log(`Wrote ${path.relative(ROOT, OUT)}: ${data.units.length} units, ${Object.keys(weapons).length} weapons`);
+  if (unresolved.size > 0) {
+    console.warn(`Unresolved names: ${[...unresolved].join(', ')}`);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

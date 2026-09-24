@@ -335,8 +335,12 @@ async function initPyodide() {
 
 
 async function calculateProbability(p) {
-  let pythonFunction = await self.pyodide.runPythonAsync(PYTHON_CODE) // eslint-disable-line no-restricted-globals
-  return pythonFunction(
+  // The module only defines functions and returns roll_and_bridge_results, so
+  // compile it once instead of re-running it (and micropip) on every call.
+  if (self.pythonFunction === undefined) {
+    self.pythonFunction = await self.pyodide.runPythonAsync(PYTHON_CODE) // eslint-disable-line no-restricted-globals
+  }
+  return self.pythonFunction(
     p['successValueA'], p['burstA'], p['bonusBurstA'], p['damageA'], p['armA'], p['btsA'], p['ammoA'],
     p['contA'], p['critImmuneA'],
     p['successValueB'], p['burstB'], p['bonusBurstB'], p['damageB'], p['armB'], p['btsB'], p['ammoB'],
@@ -347,8 +351,10 @@ async function calculateProbability(p) {
 
 self.onmessage = async (msg) => {
   if(msg.data.command === 'calculate') {
+    // requestId (optional) is echoed back so callers can match replies to requests.
+    const requestId = msg.data.requestId;
     if(self.pyodide === undefined) {
-      self.postMessage({command: 'status', value: 'notready', description: 'Pyodide not ready yet'})
+      self.postMessage({command: 'status', value: 'notready', description: 'Pyodide not ready yet', requestId})
       return
     }
     let startTime = Date.now();
@@ -356,9 +362,11 @@ self.onmessage = async (msg) => {
     results['parameters'] = msg.data.data;
     results['id'] = Date.now();
     let elapsed = Date.now() - startTime;
-    console.log('Returning results from Face 2 Face calculations:')
-    console.log(results)
-    self.postMessage({command: 'result', value: results, description: 'testing', elapsed: elapsed, totalRolls: results['total_rolls']})
+    if (!msg.data.quiet) {
+      console.log('Returning results from Face 2 Face calculations:')
+      console.log(results)
+    }
+    self.postMessage({command: 'result', requestId, value: results, description: 'testing', elapsed: elapsed, totalRolls: results['total_rolls']})
   } else if (msg.data.command === 'init') {
     await initPyodide()
   }

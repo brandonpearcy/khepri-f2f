@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef, useMemo} from 'react'
+import {useState, useEffect, useRef, useMemo, useCallback} from 'react'
 import CssBaseline from '@mui/material/CssBaseline';
 import './App.css'
 import {any, assoc, clone, findIndex, propEq, remove, update} from "ramda";
@@ -37,16 +37,28 @@ import {useSearchParams} from "react-router-dom";
 import validateParams from "./inputs/validateParams.js";
 import curry from "ramda/src/curry";
 import {CustomAppBar} from "./componets/CustomAppBar.jsx";
+import UnitLoader from "./units/UnitLoader.jsx";
+import {createF2fClient} from "./lib/f2fClient.js";
+import ModeTabs, {MODES} from "./componets/ModeTabs.jsx";
 
 export const themeAtom = atomWithStorage('selectedTheme', 'dark')
+// 'basic' = the original inputs only; 'matchup' = unit picker on top of them.
+export const modeAtom = atomWithStorage('calculatorMode', MODES.basic)
 
 function App() {
   // App Status
   const [statusMessage, setStatusMessage] = useState("(loading...)");
   const workerRef = useRef(null);
+  // Promise-based side channel to the same worker, used for weapon previews.
+  const clientRef = useRef(null);
+  const previewCalculate = useCallback((params) => {
+    if (!clientRef.current) return Promise.reject(new Error('worker not ready'));
+    return clientRef.current.calculate(params, {quiet: true});
+  }, []);
 
   // theme
   const [selectedTheme, ] = useAtom(themeAtom)
+  const [calcMode, setCalcMode] = useAtom(modeAtom)
 
   // Search params
   let [searchParams, setSearchParams] = useSearchParams();
@@ -75,6 +87,22 @@ function App() {
   const [contB, setContB] = useState(p.contB);
   const [critImmuneB, setCritImmuneB] = useState(p.critImmuneB);
   const [fixedFaceToFace, setFixedFaceToFace] = useState(p.fixedFaceToFace);
+
+  // Bulk update from a unit profile (UnitLoader). React 18 batches the setters
+  // into one render, so the calculation effect below runs once.
+  const setters = {
+    burstA: setBurstA, bonusBurstA: setBonusBurstA, successValueA: setSuccessValueA, damageA: setDamageA,
+    armA: setArmA, btsA: setBtsA, ammoA: setAmmoA, contA: setContA, critImmuneA: setCritImmuneA,
+    dtwVsDodge: setDtwVsDodge,
+    burstB: setBurstB, bonusBurstB: setBonusBurstB, successValueB: setSuccessValueB, damageB: setDamageB,
+    armB: setArmB, btsB: setBtsB, ammoB: setAmmoB, contB: setContB, critImmuneB: setCritImmuneB,
+    fixedFaceToFace: setFixedFaceToFace,
+  };
+  const applyInputs = (partial) => {
+    Object.entries(partial).forEach(([key, value]) => {
+      if (value !== undefined && setters[key]) setters[key](value);
+    });
+  };
 
   // Outputs
   const [f2fResults, setF2fResults] = useState(null);
@@ -158,6 +186,8 @@ function App() {
 
   // Worker message received
   const messageReceived = (msg) => {
+    // Preview replies carry a requestId and are resolved by the client, not shown.
+    if (clientRef.current?.handleMessage(msg)) return;
     if(msg.data.command === 'result'){
       let value = msg.data.value;
       let cl = clone(value);
@@ -173,6 +203,7 @@ function App() {
   const workerError = (error) => {
     console.log(`Worker error: ${error.message} \n`);
     setStatusMessage(`Worker error: ${error.message}`);
+    clientRef.current?.rejectAll(error);
     throw error;
   };
 
@@ -182,6 +213,7 @@ function App() {
     const run = async () => {
       // Web workers without comlink
       workerRef.current = new Worker(new URL('./python.worker.js', import.meta.url),);
+      clientRef.current = createF2fClient(workerRef.current);
       workerRef.current.onmessage = messageReceived
       workerRef.current.onerror = workerError
       workerRef.current.postMessage({command:'init'});
@@ -286,7 +318,11 @@ function App() {
       <CssBaseline/>
       <CustomAppBar/>
       <Container maxWidth='xl'>
+        <ModeTabs mode={calcMode} onChange={setCalcMode}/>
         <Grid container spacing={2}>
+          {calcMode === MODES.matchup && <Grid item xs={12}>
+            <UnitLoader calculate={previewCalculate} onApply={applyInputs}/>
+          </Grid>}
           <Grid xs={12} sm={6} lg={4} xl={3} item>
             <Card style={{alignItems: "center", justifyContent: "center"}}>
               <CardContent>
