@@ -1,4 +1,3 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
 import {
   Alert,
   Box,
@@ -6,22 +5,18 @@ import {
   Card,
   CardContent,
   CircularProgress,
-  FormControl,
   Grid,
   IconButton,
-  MenuItem,
-  Select,
   Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
 import CachedIcon from '@mui/icons-material/Cached';
 import EditIcon from '@mui/icons-material/Edit';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import PropTypes from 'prop-types';
-import UnitPicker, {EMPTY_SELECTION} from './UnitPicker.jsx';
-import {RANGE_BANDS, deriveInputs, matchupTraits, resolveSelection, searchKey} from './profileToInputs.js';
-import {previewCandidates} from './previews.js';
-import usePreviewWounds from './usePreviewWounds.js';
+import UnitPicker from './UnitPicker.jsx';
+import {RANGE_BANDS, matchupTraits} from './profileToInputs.js';
 
 // "HATAMOTO Plasma Carbine (Hit)" for the collapsed summary: the loadout's
 // short name from Army, then the weapon.
@@ -35,8 +30,8 @@ function sideSummary(resolved) {
   return weapon ? `${short} · ${weapon}` : short;
 }
 
-function SideLine({resolved, color}) {
-  const traits = matchupTraits(resolved);
+function SideLine({resolved, role, color}) {
+  const traits = matchupTraits(resolved, role);
   return (
     <Box>
       <Typography variant="body1" sx={{color, fontWeight: 600}}>{sideSummary(resolved)}</Typography>
@@ -49,68 +44,19 @@ function SideLine({resolved, color}) {
 
 SideLine.propTypes = {
   resolved: PropTypes.object,
+  role: PropTypes.oneOf(['A', 'B']).isRequired,
   color: PropTypes.string.isRequired,
 };
 
-function UnitLoader({calculate, onApply}) {
-  const [army, setArmy] = useState(null);
-  const [loadError, setLoadError] = useState(null);
-  const loading = useRef(false);
-  useEffect(() => {
-    if (loading.current) return;
-    loading.current = true;
-    import('../data/army.json')
-      .then((m) => {
-        const units = m.default.units.map((u) => ({...u, search: searchKey(u.isc)}));
-        setArmy({...m.default, units});
-      })
-      .catch((e) => setLoadError(e));
-  }, []);
-
-  const [selA, setSelA] = useState(EMPTY_SELECTION);
-  const [selB, setSelB] = useState(EMPTY_SELECTION);
-  const [rangeCm, setRangeCm] = useState(40);
-  // After "Apply matchup" the pickers fold away behind a one-line summary.
-  const [collapsed, setCollapsed] = useState(false);
-
-  const resolvedA = useMemo(() => (army ? resolveSelection(army, selA) : null), [army, selA]);
-  const resolvedB = useMemo(() => (army ? resolveSelection(army, selB) : null), [army, selB]);
-  const derived = useMemo(
-    () => (army ? deriveInputs({active: resolvedA, reactive: resolvedB, rangeCm}) : null),
-    [army, rangeCm, resolvedA, resolvedB],
-  );
-
-  const hasSelection = Boolean(selA.unitId || selB.unitId);
-
-  // Wounds/order for every weapon option, given the other side's current pick.
-  // Nothing is computed while collapsed.
-  const candidatesA = useMemo(
-    () => (army && !collapsed ? previewCandidates({army, side: 'A', selX: selA, selY: selB, rangeCm}) : []),
-    [army, collapsed, rangeCm, selA, selB],
-  );
-  const candidatesB = useMemo(
-    () => (army && !collapsed ? previewCandidates({army, side: 'B', selX: selB, selY: selA, rangeCm}) : []),
-    [army, collapsed, rangeCm, selA, selB],
-  );
-  const previewsA = usePreviewWounds(candidatesA, calculate);
-  const previewsB = usePreviewWounds(candidatesB, calculate);
-
-  // "No ARO" only exists on the reactive side; drop it so the new active side
-  // auto-picks its first BS weapon. Dodge is valid on both sides.
-  const swapSides = () => {
-    setSelA({...selB, weaponKey: selB.weaponKey === 'none' ? null : selB.weaponKey});
-    setSelB(selA);
-  };
-
-  const applyMatchup = () => {
-    onApply(derived.inputs);
-    setCollapsed(true);
-  };
+// Unit pickers, range and swap/minify/reset. State lives in useMatchup (App).
+function UnitLoader({matchup}) {
+  const {army, loadError, rangeCm, collapsed, setCollapsed, derived, hasSelection, swapSides, reset} = matchup;
+  const resolvedA = matchup.A.resolved;
+  const resolvedB = matchup.B.resolved;
 
   const rangeLabel = RANGE_BANDS.find((b) => b.to === rangeCm)?.label ?? `${rangeCm} cm`;
 
-  // Sits between the columns on wide screens, in the card's top-right corner
-  // when the columns stack.
+  // Above the pickers when the columns stack.
   const swapButton = (
     <Tooltip title="Swap active and reactive">
       <span>
@@ -129,6 +75,21 @@ function UnitLoader({calculate, onApply}) {
     </Tooltip>
   );
 
+  // Between the columns there's room for just the icon.
+  const swapIconButton = (
+    <Tooltip title="Swap active and reactive">
+      <span>
+        <IconButton
+          aria-label="swap active and reactive"
+          disabled={!hasSelection}
+          onClick={swapSides}
+        >
+          <CachedIcon sx={{fontSize: 36}} />
+        </IconButton>
+      </span>
+    </Tooltip>
+  );
+
   if (collapsed) {
     return (
       <Card>
@@ -137,11 +98,11 @@ function UnitLoader({calculate, onApply}) {
             <Box sx={{flex: 1, minWidth: 0}}>
               <Stack direction={{xs: 'column', sm: 'row'}} spacing={2} alignItems={{xs: 'stretch', sm: 'center'}}>
                 <Box sx={{flex: 1, minWidth: 0}}>
-                  <SideLine resolved={resolvedA} color="active.500" />
+                  <SideLine resolved={resolvedA} role="A" color="active.500" />
                 </Box>
                 <Typography variant="body2" color="text.secondary" sx={{alignSelf: 'center'}}>vs</Typography>
                 <Box sx={{flex: 1, minWidth: 0}}>
-                  <SideLine resolved={resolvedB} color="reactive.500" />
+                  <SideLine resolved={resolvedB} role="B" color="reactive.500" />
                 </Box>
               </Stack>
               <Typography variant="body2" color="text.secondary" sx={{mt: 1}}>Range: {rangeLabel}</Typography>
@@ -165,19 +126,11 @@ function UnitLoader({calculate, onApply}) {
     <Card>
       <CardContent>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={4}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 1.5}}>
-              <Typography variant="h6" sx={{fontFamily: 'conthrax'}}>Range</Typography>
-              {army && <Box sx={{display: {xs: 'block', md: 'none'}}}>{swapButton}</Box>}
-            </Stack>
-            <FormControl fullWidth size="small">
-              <Select value={rangeCm} onChange={(e) => setRangeCm(e.target.value)}>
-                {RANGE_BANDS.map((b) => (
-                  <MenuItem key={b.to} value={b.to}>{b.label}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+          {army && (
+            <Grid item xs={12} sx={{display: {xs: 'flex', md: 'none'}, justifyContent: 'flex-end'}}>
+              {swapButton}
+            </Grid>
+          )}
           {loadError && (
             <Grid item xs={12}>
               <Alert severity="error">Could not load unit data: {String(loadError.message ?? loadError)}</Alert>
@@ -193,27 +146,13 @@ function UnitLoader({calculate, onApply}) {
               <Grid item xs={12}>
                 <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems="stretch">
                   <Box sx={{flex: 1, minWidth: 0}}>
-                    <UnitPicker
-                      army={army}
-                      onChange={setSelA}
-                      previews={previewsA}
-                      rangeCm={rangeCm}
-                      value={selA}
-                      variant="active"
-                    />
+                    <UnitPicker army={army} onChange={matchup.A.setSel} value={matchup.A.sel} variant="active" />
                   </Box>
                   <Box sx={{display: {xs: 'none', md: 'flex'}, alignItems: 'center', justifyContent: 'center', mx: 2}}>
-                    {swapButton}
+                    {swapIconButton}
                   </Box>
                   <Box sx={{flex: 1, minWidth: 0}}>
-                    <UnitPicker
-                      army={army}
-                      onChange={setSelB}
-                      previews={previewsB}
-                      rangeCm={rangeCm}
-                      value={selB}
-                      variant="reactive"
-                    />
+                    <UnitPicker army={army} onChange={matchup.B.setSel} value={matchup.B.sel} variant="reactive" />
                   </Box>
                 </Stack>
               </Grid>
@@ -229,25 +168,22 @@ function UnitLoader({calculate, onApply}) {
                     <Stack direction="row" spacing={1}>
                       <Button
                         variant="contained"
-                        disabled={!derived.ok}
-                        onClick={applyMatchup}
+                        startIcon={<KeyboardArrowUpIcon />}
+                        onClick={() => setCollapsed(true)}
                         sx={{
                           bgcolor: 'text.primary',
                           color: 'background.paper',
                           '&:hover': {bgcolor: 'text.secondary'},
                         }}
                       >
-                        Pew pew!
+                        Minify
                       </Button>
                       <Button
                         variant="text"
                         sx={{color: 'text.primary'}}
-                        onClick={() => {
-                          setSelA(EMPTY_SELECTION);
-                          setSelB(EMPTY_SELECTION);
-                        }}
+                        onClick={reset}
                       >
-                        Clear
+                        Reset
                       </Button>
                     </Stack>
                   </Stack>
@@ -262,8 +198,7 @@ function UnitLoader({calculate, onApply}) {
 }
 
 UnitLoader.propTypes = {
-  calculate: PropTypes.func,
-  onApply: PropTypes.func.isRequired,
+  matchup: PropTypes.object.isRequired,
 };
 
 export default UnitLoader;

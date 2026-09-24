@@ -258,7 +258,8 @@ test('matchupTraits lists only the traits the converter uses', () => {
   const plain = side(profile({arm: 3}), combi, '1:', true);
   assert.deepEqual(matchupTraits(plain), ['In cover']);
   const dodger = side(profile({skills: [{id: 40, name: 'Dodge', extra: ['+3']}, {id: 162, name: 'Immunity', extra: ['Shock']}]}), combi, 'dodge');
-  assert.deepEqual(matchupTraits(dodger), ['Dodge (+3)']);
+  assert.deepEqual(matchupTraits(dodger), ['Dodge +3']);
+  assert.deepEqual(matchupTraits({...dodger, ftSize: 3}), ['Dodge +4']);
 });
 
 test('Hatamoto plasma vs Sierra Dronbot HMG at 8-16"', () => {
@@ -285,4 +286,65 @@ test('searchKey folds case and accents', () => {
   assert.equal(searchKey('Nøkken'), 'nokken');
   assert.equal(searchKey('Kōsuke ÉLITE'), 'kosuke elite');
   assert.equal(searchKey('Ǎnzhàn'), 'anzhan');
+});
+
+test('fireteam size sets cumulative bonuses', () => {
+  const at = (ftSize, weaponKey = '1:') => ({...side(profile({ph: 11}), combi, weaponKey), ftSize});
+  const shoot = (n) => deriveInputs({active: at(n), reactive: at(n), rangeCm: 40}).inputs;
+  assert.deepEqual([0, 2, 3, 4, 5].map((n) => shoot(n).bonusBurstA), [0, 1, 1, 1, 1]);
+  assert.deepEqual([0, 2, 3, 4, 5].map((n) => shoot(n).successValueA), [15, 15, 15, 16, 16]);
+  assert.equal(shoot(4).bonusBurstB, 1);
+  assert.equal(shoot(4).burstB, 1);
+
+  const dodge = (n) => deriveInputs({active: at(1), reactive: at(n, 'dodge'), rangeCm: 40}).inputs.successValueB;
+  assert.deepEqual([0, 2, 3].map(dodge), [11, 11, 12]);
+
+  assert.deepEqual(matchupTraits(at(3)), ['+1SD']);
+  assert.deepEqual(matchupTraits(at(4)), ['+1SD', 'BS+1']);
+  assert.ok(deriveInputs({active: at(5), reactive: at(1), rangeCm: 40}).notes.some((n) => n.includes('Sixth Sense')));
+
+  const flamer = option([{id: 3, name: 'Heavy Flamethrower'}]);
+  const t = deriveInputs({active: {...side(profile(), flamer, '3:'), ftSize: 4}, reactive: at(1), rangeCm: 20});
+  assert.equal(t.inputs.bonusBurstA, 0);
+});
+
+test('BS Attack skill SD / B stack with Fireteam and loadout extras', () => {
+  const crux = profile({skills: [{id: 201, name: 'BS Attack', extra: ['+1SD']}]});
+  const x = {...side(crux, combi, '1:'), ftSize: 2};
+  const r = deriveInputs({active: x, reactive: x, rangeCm: 40}).inputs;
+  assert.equal(r.bonusBurstA, 2);
+  assert.equal(r.bonusBurstB, 2);
+  assert.deepEqual(matchupTraits(x), ['+2SD']);
+
+  const gecko = profile({skills: [{id: 201, name: 'BS Attack', extra: ['+1B']}]});
+  const g = side(gecko, combi, '1:');
+  const rg = deriveInputs({active: g, reactive: g, rangeCm: 40}).inputs;
+  assert.equal(rg.burstA, 4);
+  assert.equal(rg.burstB, 1);
+  assert.deepEqual(matchupTraits(g, 'A'), ['+1B']);
+  assert.deepEqual(matchupTraits(g, 'B'), []);
+});
+
+test('template burst comes from loadout extras (Dog-Warrior B2 Chain Rifle)', () => {
+  const chain = option([{id: 3, name: 'Heavy Flamethrower', extra: ['+1B']}]);
+  const x = {...side(profile(), chain, '3:'), ftSize: 4};
+  assert.match(bsWeapons(chain, W)[0].label, / · B2T · /);
+  const r = deriveInputs({active: x, reactive: side(profile(), combi, '1:'), rangeCm: 20}).inputs;
+  assert.equal(r.burstA, 2);
+  assert.equal(r.bonusBurstA, 0);
+  assert.equal(r.dtwVsDodge, true);
+  assert.deepEqual(matchupTraits(x), []);
+});
+
+test('loadout labels: no pts/SWC, same-playing loadouts collapse, extras disambiguate', () => {
+  const w = [{id: 1, name: 'Combi Rifle'}, {id: 8, name: 'CC Weapon'}];
+  const group = {options: [
+    option(w, {id: 1, points: 10}),
+    option([...w].reverse(), {id: 2, points: 12, swc: '0.5'}),
+    option([{id: 1, name: 'Combi Rifle', extra: ['+1B']}, w[1]], {id: 3}),
+  ]};
+  assert.deepEqual(loadoutLabels(group, W), [
+    {id: 1, label: 'Combi Rifle'},
+    {id: 3, label: 'Combi Rifle (+1B)'},
+  ]);
 });

@@ -13,6 +13,7 @@ export const SKILL = {
   SURPRISE_ATTACK: 191,
   NO_COVER: 264,
   LIMITED_COVER: 268,
+  BS_ATTACK: 201,
 };
 
 export const EQUIP = {
@@ -26,14 +27,15 @@ export const EQUIP = {
 
 // Shared distance between the two units. `to` is the upper bound in cm, which
 // matches the cumulative band limits in the Army weapon table.
+// Same columns as the N5 weapon chart: 8" | 16" | 24" | 32" | 40" | 48" | 96".
 export const RANGE_BANDS = [
-  {to: 20, label: '0-8"'},
-  {to: 40, label: '8-16"'},
-  {to: 60, label: '16-24"'},
-  {to: 80, label: '24-32"'},
-  {to: 100, label: '32-40"'},
-  {to: 120, label: '40-48"'},
-  {to: 240, label: '48"+'},
+  {to: 20, inches: 8, label: '0-8"'},
+  {to: 40, inches: 16, label: '8-16"'},
+  {to: 60, inches: 24, label: '16-24"'},
+  {to: 80, inches: 32, label: '24-32"'},
+  {to: 100, inches: 40, label: '32-40"'},
+  {to: 120, inches: 48, label: '40-48"'},
+  {to: 240, inches: 96, label: '48-96"'},
 ];
 
 // Same limits as src/inputs/validateParams.js
@@ -104,7 +106,9 @@ export function parseWeaponMods(extra = []) {
 const modeSuffix = (mode) => (mode ? ` (${mode.replace(/ Mode$/i, '')})` : '');
 
 export function weaponLabel(row, mods) {
-  const burst = isTemplate(row) ? 'T' : (row.burst ?? 1) + mods.burst;
+  const n = (row.burst ?? 1) + mods.burst;
+  // Templates can still fire more than one (e.g. a Dog-Warrior's B2 Chain Rifle).
+  const burst = isTemplate(row) ? (n > 1 ? `${n}T` : 'T') : n;
   const sd = mods.sd > 0 ? `+${mods.sd}SD` : '';
   const dmg = mods.ps ?? row.dmg;
   return `${row.name}${modeSuffix(row.mode)} · B${burst}${sd} · PS${dmg} · ${row.ammo ?? 'N'}`;
@@ -129,19 +133,33 @@ export function bsWeapons(option, weapons) {
   return out;
 }
 
-export function dodgeSuccessValue(profile, traits) {
+// Fireteam bonuses by member count (N5, cumulative, assuming all members are
+// the same Unit): 2 = BS Attack +1 SD, 3 = +3 Discover and +1 Dodge MOD,
+// 4 = +1 BS, 5 = Sixth Sense. 0 means not in a Fireteam.
+export const FIRETEAM_MIN = 2;
+export const FIRETEAM_MAX = 5;
+export function fireteamBonuses(size = 0) {
+  return {
+    sd: size >= 2 ? 1 : 0,
+    dodge: size >= 3 ? 1 : 0,
+    bs: size >= 4 ? 1 : 0,
+    sixthSense: size >= 5,
+  };
+}
+
+export function dodgeSuccessValue(profile, traits, mod = 0) {
   let sv = profile?.ph ?? 0;
   const extra = skillExtra(traits, SKILL.DODGE);
   let m;
   if (extra && (m = /^PH=(\d+)$/.exec(extra))) sv = Number(m[1]);
   else if (extra && (m = /^([+-]\d+)$/.exec(extra))) sv += Number(m[1]);
-  return clamp(LIMITS.successValue, sv);
+  return clamp(LIMITS.successValue, sv + mod);
 }
 
 // Reactive-only choices that are not weapons.
 // Dodge is valid for both sides; "No ARO" only makes sense for the reactive one.
-export function pseudoWeapons(profile, traits, side = 'B') {
-  const list = [{key: 'dodge', pseudo: 'dodge', label: `Dodge (PH ${dodgeSuccessValue(profile, traits)})`}];
+export function pseudoWeapons(profile, traits, side = 'B', dodgeMod = 0) {
+  const list = [{key: 'dodge', pseudo: 'dodge', label: `Dodge (PH ${dodgeSuccessValue(profile, traits, dodgeMod)})`}];
   if (side === 'B') list.push({key: 'none', pseudo: 'none', label: 'No ARO (unopposed)'});
   return list;
 }
@@ -157,15 +175,33 @@ export function rangeModFor(row, distanceCm) {
 function bsWeaponNames(option, weapons) {
   const names = [];
   for (const w of option?.weapons ?? []) {
-    if ((weapons?.[w.id] ?? []).some(isBsAttackWeapon) && !names.includes(w.name)) names.push(w.name);
+    // Extras such as "+1B" tell otherwise identical loadouts apart.
+    const name = w.extra?.length ? `${w.name} (${w.extra.join(', ')})` : w.name;
+    if ((weapons?.[w.id] ?? []).some(isBsAttackWeapon) && !names.includes(name)) names.push(name);
   }
   return names;
 }
 
 // Distinguishable labels for the loadout rows of a profile group (the Army
 // app lists e.g. six identically named "HATAMOTO" rows).
+// Loadouts that only differ in points, SWC, order or non-BS gear play the same
+// here; keep the first of each.
+const traitKey = (t) => `${t.id}:${(t.extra ?? []).join(',')}`;
+const loadoutFingerprint = (o, weapons) => JSON.stringify([
+  o.name,
+  (o.weapons ?? []).filter((w) => (weapons?.[w.id] ?? []).some(isBsAttackWeapon)).map(traitKey).sort(),
+  (o.skills ?? []).map(traitKey).sort(),
+  (o.equip ?? []).map(traitKey).sort(),
+]);
+
 export function loadoutLabels(group, weapons) {
-  const options = group?.options ?? [];
+  const seen = new Set();
+  const options = (group?.options ?? []).filter((o) => {
+    const fp = loadoutFingerprint(o, weapons);
+    if (seen.has(fp)) return false;
+    seen.add(fp);
+    return true;
+  });
   const namesDiffer = new Set(options.map((o) => o.name)).size > 1;
   const perOption = options.map((o) => bsWeaponNames(o, weapons));
   const labels = options.map((o, i) => {
@@ -179,8 +215,7 @@ export function loadoutLabels(group, weapons) {
     if (namesDiffer && o.name) parts.push(o.name);
     if (shown.length > 0) parts.push(shown.join(', '));
     if (extras.length > 0) parts.push(extras.join(', '));
-    parts.push(`${o.points} pts / ${o.swc} SWC`);
-    return {id: o.id, label: parts.join(' · ')};
+    return {id: o.id, label: parts.join(' · ') || o.name || `Profile ${o.id}`};
   });
   const counts = labels.reduce((acc, l) => acc.set(l.label, (acc.get(l.label) ?? 0) + 1), new Map());
   return labels.map((l) => (counts.get(l.label) > 1 ? {...l, label: `${l.label} #${l.id}`} : l));
@@ -203,7 +238,11 @@ export function resolveSelection(army, sel) {
       ?? pseudoWeapons(profile, traits, 'B').find((w) => w.key === sel.weaponKey)
       ?? null;
   }
-  return {unit, factionId, groups, group, profile, option, traits, weapon, inCover: Boolean(sel.inCover)};
+  return {
+    unit, factionId, groups, group, profile, option, traits, weapon,
+    inCover: Boolean(sel.inCover),
+    ftSize: sel.ftSize ?? 0,
+  };
 }
 
 const equipExtra = (traits, id) => (traits?.equip ?? []).find((e) => e.id === id)?.extra?.[0] ?? null;
@@ -266,6 +305,7 @@ function unsupportedTraits(side) {
   for (const extra of ['ARM', 'Shock']) {
     if (hasSkill(side.traits, SKILL.IMMUNITY, extra)) found.push(`Immunity (${extra})`);
   }
+  if (fireteamBonuses(side.ftSize).sixthSense) found.push('Sixth Sense');
   return found;
 }
 
@@ -276,6 +316,32 @@ function approximationNotes(label, side) {
   }
   return notes;
 }
+
+// Burst, SD and BS bonuses on a BS Attack, summed over the weapon's loadout
+// extras, the profile's BS Attack (+1SD / +1B) skill and the Fireteam.
+// Templates keep their burst bonuses but don't roll, so get no SD or BS.
+function attackBonuses(x) {
+  const row = x.weapon?.row;
+  if (!row) return {burst: 0, sd: 0, bs: 0, skillBurst: 0};
+  const skillMods = parseWeaponMods(
+    (x.traits?.skills ?? [])
+      .filter((s) => s.id === SKILL.BS_ATTACK)
+      .flatMap((s) => s.extra ?? [])
+      .filter((e) => /^\+\d+(B|SD)$/.test(e)),
+  );
+  const burst = x.weapon.mods.burst + skillMods.burst;
+  if (isTemplate(row)) return {burst, sd: 0, bs: 0, skillBurst: skillMods.burst};
+  const ft = fireteamBonuses(x.ftSize);
+  return {
+    burst,
+    sd: x.weapon.mods.sd + skillMods.sd + ft.sd,
+    bs: ft.bs,
+    skillBurst: skillMods.burst,
+  };
+}
+
+// Only Total Reaction / Neurocinetics keep their full burst in ARO.
+const keepsAroBurst = (x) => hasSkill(x.traits, SKILL.TOTAL_REACTION) || hasSkill(x.traits, SKILL.NEUROCINETICS);
 
 function attackInputs(x, y, rangeCm, side, errors, notes) {
   const label = side === 'A' ? 'Active' : 'Reactive';
@@ -289,16 +355,15 @@ function attackInputs(x, y, rangeCm, side, errors, notes) {
   const mim = y ? mimetismMod(y.traits, x.traits) : 0;
   const albedo = y ? albedoMod(y.traits, x.traits) : 0;
   const cover = benefitsFromCover(y) || hasNanoscreen(y) ? -3 : 0;
-  const sv = clamp(LIMITS.successValue, x.profile.bs + rangeMod + mim + albedo + cover + mods.sv);
+  const bonus = attackBonuses(x);
+  const sv = clamp(LIMITS.successValue, x.profile.bs + rangeMod + mim + albedo + cover + mods.sv + bonus.bs);
 
-  let burst = isTemplate(row) ? 1 : (row.burst ?? 1) + mods.burst;
-  if (side === 'B' && !hasSkill(x.traits, SKILL.TOTAL_REACTION) && !hasSkill(x.traits, SKILL.NEUROCINETICS)) {
-    burst = 1;
-  }
+  let burst = (row.burst ?? 1) + bonus.burst;
+  if (side === 'B' && !keepsAroBurst(x)) burst = 1;
   const out = {
     [`successValue${side}`]: sv,
     [`burst${side}`]: clamp(side === 'A' ? LIMITS.burstA : LIMITS.burstB, burst),
-    [`bonusBurst${side}`]: clamp(LIMITS.bonusBurst, mods.sd),
+    [`bonusBurst${side}`]: clamp(LIMITS.bonusBurst, bonus.sd),
     [`damage${side}`]: clamp(LIMITS.damage, mods.ps ?? row.dmg),
     [`ammo${side}`]: calcAmmo(row, y?.traits),
     [`cont${side}`]: mods.cont || (row.props ?? []).includes('Continous Damage'),
@@ -334,20 +399,43 @@ const MODELED_IMMUNITIES = ['AP', 'Critical', 'Enhanced'];
 const traitLabel = (t) => (t.extra?.length ? `${t.name} (${t.extra.join(', ')})` : t.name);
 
 // Skills, equipment and state on this side that the converter actually uses,
-// for the matchup summary. Order follows the profile.
-export function matchupTraits(side) {
+// for the matchup summary. Order follows the profile, then the roll bonuses
+// that apply to the chosen action (Fireteam included), summed per kind.
+// `role` is 'A' (active) or 'B' (reactive).
+export function matchupTraits(side, role = 'A') {
   if (!side?.traits) return [];
   const out = [];
   for (const s of side.traits.skills) {
     if (MODELED_SKILLS.includes(s.id)) out.push(traitLabel(s));
     else if (s.id === SKILL.IMMUNITY && (s.extra ?? []).some((e) => MODELED_IMMUNITIES.includes(e))) out.push(traitLabel(s));
-    else if (s.id === SKILL.DODGE && side.weapon?.pseudo === 'dodge') out.push(traitLabel(s));
   }
   for (const e of side.traits.equip) {
     if (MODELED_EQUIP.includes(e.id)) out.push(traitLabel(e));
   }
   if (benefitsFromCover(side)) out.push('In cover');
+  out.push(...rollBonusLabels(side, role));
   return [...new Set(out)];
+}
+
+const signed = (n) => `${n > 0 ? '+' : ''}${n}`;
+
+function rollBonusLabels(side, role) {
+  const ft = fireteamBonuses(side.ftSize);
+  if (side.weapon?.pseudo === 'dodge') {
+    const extra = skillExtra(side.traits, SKILL.DODGE);
+    const mod = extra && /^[+-]\d+$/.test(extra) ? Number(extra) : 0;
+    const labels = [];
+    // "Dodge (PH=14)" replaces PH; the Fireteam MOD still applies on top.
+    if (extra && !/^[+-]\d+$/.test(extra)) labels.push(`Dodge (${extra})`);
+    if (mod + ft.dodge !== 0) labels.push(`Dodge ${signed(mod + ft.dodge)}`);
+    return labels;
+  }
+  const b = attackBonuses(side);
+  const labels = [];
+  if (b.skillBurst > 0 && (role === 'A' || keepsAroBurst(side))) labels.push(`+${b.skillBurst}B`);
+  if (b.sd > 0) labels.push(`+${b.sd}SD`);
+  if (b.bs > 0) labels.push(`BS+${b.bs}`);
+  return labels;
 }
 
 // Builds the partial calculator input object for both sides.
@@ -371,7 +459,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
       inputs.ammoA = 'DODGE';
       inputs.burstA = 1;
       inputs.bonusBurstA = 0;
-      inputs.successValueA = dodgeSuccessValue(a.profile, a.traits);
+      inputs.successValueA = dodgeSuccessValue(a.profile, a.traits, fireteamBonuses(a.ftSize).dodge);
       inputs.contA = false;
       inputs.dtwVsDodge = false;
     } else if (a.weapon.pseudo) {
@@ -394,7 +482,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
       inputs.ammoB = 'DODGE';
       inputs.burstB = 1;
       inputs.bonusBurstB = 0;
-      inputs.successValueB = dodgeSuccessValue(b.profile, b.traits);
+      inputs.successValueB = dodgeSuccessValue(b.profile, b.traits, fireteamBonuses(b.ftSize).dodge);
       inputs.contB = false;
     } else if (b.weapon.pseudo === 'none') {
       inputs.burstB = 0;

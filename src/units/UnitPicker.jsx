@@ -2,37 +2,17 @@ import {useEffect, useMemo, useRef, useState} from 'react';
 import {
   Autocomplete,
   Checkbox,
-  FormControl,
   FormControlLabel,
   Grid,
-  InputLabel,
   MenuItem,
-  Select,
   TextField,
   Typography,
 } from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import {twoDecimalPlaces} from '../display/DataTransform.js';
-import {
-  SKILL,
-  bsWeapons,
-  effectiveTraits,
-  loadoutLabels,
-  pseudoWeapons,
-  rangeModFor,
-  searchKey,
-} from './profileToInputs.js';
-
-export const EMPTY_SELECTION = {
-  unitId: null,
-  factionId: null,
-  groupId: null,
-  profileId: null,
-  optionId: null,
-  weaponKey: null,
-  inCover: false,
-};
+import {SKILL, bsWeapons, effectiveTraits, loadoutLabels, searchKey} from './profileToInputs.js';
+import SelectField, {compactText} from './SelectField.jsx';
+import {EMPTY_SELECTION} from './useMatchup.js';
 
 // Match the ISC only, ignoring case and accents (`search` is built at load).
 const filterOptions = (units, {inputValue}) => {
@@ -40,60 +20,9 @@ const filterOptions = (units, {inputValue}) => {
   return units.filter((u) => u.search.includes(q));
 };
 
-// Labels carry a lot of detail (weapon · B · PS · range · W/order), so on
-// phones shrink the text and let rows wrap instead of truncating.
-const compactText = {fontSize: {xs: '0.8rem', sm: '1rem'}, whiteSpace: 'normal'};
-const selectSx = {'& .MuiSelect-select': {...compactText, lineHeight: 1.3}};
-const menuProps = {sx: {'& .MuiMenuItem-root': {...compactText, lineHeight: 1.3}}};
-
-function SelectField({label, value, onChange, color, field, open, onOpen, onClose, children}) {
-  return (
-    <FormControl fullWidth size="small" color={color}>
-      <InputLabel>{label}</InputLabel>
-      <Select
-        label={label}
-        value={value ?? ''}
-        onChange={(e) => onChange(e.target.value)}
-        open={open}
-        onOpen={onOpen}
-        onClose={onClose}
-        sx={selectSx}
-        MenuProps={menuProps}
-        SelectDisplayProps={{'data-field': field}}
-      >
-        {children}
-      </Select>
-    </FormControl>
-  );
-}
-
-SelectField.propTypes = {
-  field: PropTypes.string,
-  open: PropTypes.bool,
-  onOpen: PropTypes.func,
-  onClose: PropTypes.func,
-  label: PropTypes.string,
-  value: PropTypes.any,
-  onChange: PropTypes.func,
-  color: PropTypes.string,
-  children: PropTypes.node,
-};
-
-// "+3" / "-6" / "out of range" for the weapon at the shared distance.
-function rangeText(row, rangeCm) {
-  const mod = rangeModFor(row, rangeCm);
-  if (mod === null) return 'out of range';
-  return `${mod > 0 ? '+' : ''}${mod} range`;
-}
-
-// Expected wounds per order from usePreviewWounds: number, 'pending' or null.
-function previewText(preview) {
-  if (preview === 'pending') return ' · …';
-  if (typeof preview === 'number') return ` · ~${twoDecimalPlaces(preview)} wounds`;
-  return '';
-}
-
-function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
+// Unit, faction, profile and loadout for one side. The weapon (auto-set to the
+// loadout's first BS weapon) is chosen in the calculator column: WeaponSelect.
+function UnitPicker({variant, army, value, onChange}) {
   const theme = useTheme();
   const color = variant === 'active' ? 'primary' : 'secondary';
   const headerColor = theme.palette[variant]['500'];
@@ -110,10 +39,6 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
 
   const labels = useMemo(() => (group ? loadoutLabels(group, army.weapons) : []), [group, army.weapons]);
   const weapons = useMemo(() => (option ? bsWeapons(option, army.weapons) : []), [option, army.weapons]);
-  const pseudo = useMemo(
-    () => (profile ? pseudoWeapons(profile, effectiveTraits(profile, option), variant === 'active' ? 'A' : 'B') : []),
-    [variant, profile, option],
-  );
 
   const noCover = Boolean(profile) && effectiveTraits(profile, option).skills.some((s) => s.id === SKILL.NO_COVER);
 
@@ -126,30 +51,30 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
   useEffect(() => {
     if (noCover && value.inCover) {
       set({inCover: false});
-    } else if (group && !value.optionId && options.length === 1) {
-      set({optionId: options[0].id, weaponKey: null});
-      setPendingFocus('weapon');
+    } else if (group && !value.optionId && labels.length === 1) {
+      set({optionId: labels[0].id, weaponKey: null});
     } else if (option && !value.weaponKey && weapons.length > 0) {
       set({weaponKey: weapons[0].key});
     }
   });
 
-  // Move focus down the form and open the menu: unit -> next select,
-  // loadout -> weapon. The target may only exist after the next render, so
-  // retry until it does.
+  // After picking a unit, focus and open the first select that still needs a
+  // choice. It may only exist after the next render, so retry until it does;
+  // stop once a loadout is set (the weapon is picked automatically).
   const rootRef = useRef(null);
-  const [pendingFocus, setPendingFocus] = useState(null);
+  const [pendingFocus, setPendingFocus] = useState(false);
   const [openField, setOpenField] = useState(null);
   useEffect(() => {
     if (!pendingFocus || !rootRef.current) return;
-    const selector = pendingFocus === 'weapon' ? '[data-field="weapon"]' : '[data-field]';
-    const el = rootRef.current.querySelector(selector);
+    const el = rootRef.current.querySelector('[data-field][data-needs-choice="true"]');
     if (el) {
       el.focus();
       setOpenField(el.dataset.field);
-      setPendingFocus(null);
+      setPendingFocus(false);
+    } else if (option) {
+      setPendingFocus(false);
     }
-  }, [pendingFocus, value]);
+  }, [pendingFocus, value, option]);
   const fieldProps = (name) => ({
     field: name,
     open: openField === name,
@@ -176,7 +101,7 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
           value={unit}
           onChange={(event, u) => {
             onChange({...EMPTY_SELECTION, unitId: u?.id ?? null, inCover: value.inCover});
-            if (u) setPendingFocus('next');
+            if (u) setPendingFocus(true);
           }}
           getOptionLabel={(u) => u.isc}
           isOptionEqualToValue={(a, b) => a.id === b.id}
@@ -267,40 +192,15 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
           <SelectField
             label="Profile"
             {...fieldProps('loadout')}
+            needsChoice={!option && labels.length > 1}
             color={color}
             value={option?.id ?? null}
-            onChange={(id) => {
-              set({optionId: id, weaponKey: null});
-              setPendingFocus('weapon');
-            }}
+            onChange={(id) => set({optionId: id, weaponKey: null})}
           >
             {labels.map((l) => (
               <MenuItem key={l.id} value={l.id}>{l.label}</MenuItem>
             ))}
           </SelectField>
-        </Grid>
-      )}
-      {option && (
-        <Grid item xs={12}>
-          <SelectField
-            label="Weapon"
-            color={color}
-            {...fieldProps('weapon')}
-            value={value.weaponKey}
-            onChange={(key) => set({weaponKey: key})}
-          >
-            {[
-              ...weapons.map((w) => (
-                <MenuItem key={w.key} value={w.key}>
-                  {`${w.label} · ${rangeText(w.row, rangeCm)}${previewText(previews?.[w.key])}`}
-                </MenuItem>
-              )),
-              ...pseudo.map((w) => <MenuItem key={w.key} value={w.key}>{w.label}</MenuItem>),
-            ]}
-          </SelectField>
-          {weapons.length === 0 && (
-            <Typography variant="caption" color="text.secondary">No BS weapons in this profile.</Typography>
-          )}
         </Grid>
       )}
       {unit && (
@@ -327,8 +227,6 @@ function UnitPicker({variant, army, rangeCm, previews, value, onChange}) {
 UnitPicker.propTypes = {
   variant: PropTypes.oneOf(['active', 'reactive']).isRequired,
   army: PropTypes.object.isRequired,
-  rangeCm: PropTypes.number.isRequired,
-  previews: PropTypes.object,
   value: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
 };

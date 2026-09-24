@@ -38,6 +38,11 @@ import validateParams from "./inputs/validateParams.js";
 import curry from "ramda/src/curry";
 import {CustomAppBar} from "./componets/CustomAppBar.jsx";
 import UnitLoader from "./units/UnitLoader.jsx";
+import FireteamPurityInput from "./units/FireteamPurityInput.jsx";
+import WeaponSelect from "./units/WeaponSelect.jsx";
+import RangeInput from "./units/RangeInput.jsx";
+import AdvancedToggle from "./units/AdvancedToggle.jsx";
+import useMatchup from "./units/useMatchup.js";
 import {createF2fClient} from "./lib/f2fClient.js";
 import ModeTabs, {MODES} from "./componets/ModeTabs.jsx";
 
@@ -103,6 +108,8 @@ function App() {
       if (value !== undefined && setters[key]) setters[key](value);
     });
   };
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const matchup = useMatchup({enabled: calcMode === MODES.matchup, calculate: previewCalculate, onApply: applyInputs});
 
   // Outputs
   const [f2fResults, setF2fResults] = useState(null);
@@ -311,6 +318,10 @@ function App() {
   // Small calculations for titles if plasma
   let armorTitleA = ammoB === "PLASMA" ? "ARM" : "ARM / BTS"
   let armorTitleB = ammoA === "PLASMA" ? "ARM" : "ARM / BTS"
+  // In Matchup mode the unit picker sets burst, SD, ammo and the other flags.
+  const showDerivedInputs = calcMode !== MODES.matchup
+  // In Matchup mode the SV / PS / ARM scales sit behind "Advanced »" (shared by both columns).
+  const showScales = showDerivedInputs || showAdvanced
 
 
   return (
@@ -321,7 +332,7 @@ function App() {
         <ModeTabs mode={calcMode} onChange={setCalcMode}/>
         <Grid container spacing={2}>
           {calcMode === MODES.matchup && <Grid item xs={12}>
-            <UnitLoader calculate={previewCalculate} onApply={applyInputs}/>
+            <UnitLoader matchup={matchup}/>
           </Grid>}
           <Grid xs={12} sm={6} lg={4} xl={3} item>
             <Card style={{alignItems: "center", justifyContent: "center"}}>
@@ -330,6 +341,13 @@ function App() {
                   <Grid item xs={12}>
                     <Typography variant="h6" sx={{fontFamily: 'conthrax'}} gutterBottom>Active</Typography>
                   </Grid>
+                  {!showDerivedInputs && <>
+                    <WeaponSelect variant='active' matchup={matchup}/>
+                    <RangeInput rangeCm={matchup.rangeCm} update={matchup.setRangeCm}/>
+                    <FireteamPurityInput value={matchup.ftSize.A} update={(n) => matchup.setFtSize('A', n)}/>
+                    <AdvancedToggle open={showAdvanced} onToggle={() => setShowAdvanced((v) => !v)}/>
+                  </>}
+                  {showDerivedInputs && <>
                   <BurstInput burst={burstA} update={setBurstA} title="Burst"
                               tooltip="Final burst after bonuses (fire team, multiple combatants in CC, etc). You can
                               set Reactive burst to 0 to calculate unopposed shots by double clicking on the die or
@@ -338,25 +356,28 @@ function App() {
                               tooltip="Additional dies that are added to the burst but cannot be kept. Only *burst* die
                               will be kept, but *burst* + *special dice* die will be rolled. Highest die will be kept.
                               You can set to zero by double clicking any value or typing 0 into the value box"/>
-                  {dtwVsDodge === false &&
+                  </>}
+                  {showScales && dtwVsDodge === false &&
                     <SuccessValueInput successValue={successValueA} update={setSuccessValueA} title="Success Value"
                                        tooltip="Target Success Value for player after all positive and negative mods
                                        (fireteam, mimetism, range, cover, etc) have been applied to the BS or CC
                                        attribute. Success values over 20 will cause critical hits starting at 1.
                                        Remember mods cap out at +/-12."/>}
-                  {ammoA !== 'DODGE' &&
+                  {showScales && ammoA !== 'DODGE' &&
                     <DamageInput damage={damageA} update={setDamageA} title="Weapon PS"
                                  tooltip="Possiblity of Survival for the weapon being used. You must include all damage
                                  mods like SR-1. You can add cover bonus here or add it to reactive player's ARM."/>}
-                  <ArmorInput armor={armA} update={setArmA} title={armorTitleA}
+                  {showScales && <ArmorInput armor={armA} update={setArmA} title={armorTitleA}
                               tooltip="Final save roll value, after all modifiers. You must halve and round up if
                               opposing player uses AP ammo. If a weapon only targets BTS (like breaker), use BTS value
-                              here. Generally I like to add the +3 cover bonus here."/>
-                  {ammoB === 'PLASMA' && <BTSInput bts={btsA} update={setBtsA}/>}
+                              here. Generally I like to add the +3 cover bonus here."/>}
+                  {showScales && ammoB === 'PLASMA' && <BTSInput bts={btsA} update={setBtsA}/>}
+                  {showDerivedInputs && <>
                   <AmmoInput ammo={ammoA} cont={contA} update={setAmmoA} updateCont={setContA} title="Ammunition"
                              tooltip="Calculate AP ammo by halving opposing ARM/BTS manually. Dodge will use the burst
                              value, so smoke dodges in fire teams can be calculated."/>
                   <OtherInputs critImmune={critImmuneA} update={setCritImmuneA} dtwVsDodge={dtwVsDodge} updateDtw={setDtwVsDodge}/>
+                  </>}
                 </Grid>
               </CardContent>
             </Card>
@@ -368,6 +389,14 @@ function App() {
                   <Grid item xs={12}>
                     <Typography variant="h6" sx={{fontFamily: 'conthrax'}} gutterBottom>Reactive</Typography>
                   </Grid>
+                  {!showDerivedInputs && <>
+                    <WeaponSelect variant='reactive' matchup={matchup}/>
+                    <RangeInput rangeCm={matchup.rangeCm} update={matchup.setRangeCm} variant='reactive'/>
+                    <FireteamPurityInput value={matchup.ftSize.B} update={(n) => matchup.setFtSize('B', n)}
+                                         variant='reactive'/>
+                    <AdvancedToggle open={showAdvanced} onToggle={() => setShowAdvanced((v) => !v)}/>
+                  </>}
+                  {showDerivedInputs && <>
                   <BurstInput burst={burstB} update={setBurstB} variant='reactive' title="Burst"
                               tooltip="Final burst after bonuses (fire team, multiple combatants in CC, etc). You can
                               set Reactive burst to 0 to calculate unopposed shots by double clicking on the die or
@@ -376,29 +405,32 @@ function App() {
                               tooltip="Additional dies that are added to the burst but cannot be kept. Only *burst* die
                               will be kept, but *burst* + *special dice* die will be rolled. Highest die will be kept.
                               You can set to zero by double clicking any value or typing 0 into the value box"/>
-                  {burstB !== 0 &&
+                  </>}
+                  {showScales && burstB !== 0 &&
                     <SuccessValueInput successValue={successValueB} update={setSuccessValueB} variant='reactive'
                                        title="Success Value"
                                        tooltip="Target Success Value for player after all positive and negative mods
                                        (fireteam, mimetism, range, cover, etc) have been applied to the BS or CC
                                        attribute. Success values over 20 will cause critical hits starting at 1.
                                        Remember mods cap out at +/-12."/>}
-                  {dtwVsDodge === false && burstB !== 0 && ammoB !== 'DODGE' &&
+                  {showScales && dtwVsDodge === false && burstB !== 0 && ammoB !== 'DODGE' &&
                     <DamageInput damage={damageB} update={setDamageB} variant='reactive' title="Weapon PS"
                                  tooltip="Possiblity of Survival for the weapon being used. You must include all damage
                                  mods like SR-1. You can add cover bonus here or add it to active player's ARM"/>}
-                  <ArmorInput armor={armB} update={setArmB} variant='reactive' title={armorTitleB}
+                  {showScales && <ArmorInput armor={armB} update={setArmB} variant='reactive' title={armorTitleB}
                               tooltip="Final computed armor value, after all modifiers. You must halve and round up if
                               opposing player uses AP ammo. If a weapon only targets BTS (like breaker), use BTS value
-                              here. Generally I like to add the +3 cover bonus here."/>
-                  {ammoA === 'PLASMA' &&
+                              here. Generally I like to add the +3 cover bonus here."/>}
+                  {showScales && ammoA === 'PLASMA' &&
                     <BTSInput bts={btsB} update={setBtsB} variant='reactive' title="BTS"
                               tooltip="BTS value. This box only shows if plasma ammo is used."/>}
+                  {showDerivedInputs && <>
                   <AmmoInput ammo={ammoB} cont={contB} update={setAmmoB} updateCont={setContB} variant='reactive'
                              dtw={dtwVsDodge} title="Ammunition" tooltip="Calculate AP ammo by halving opposing ARM/BTS
                              manually. Dodge will use the burst value, so smoke dodges in fire teams can be calculated."/>
                   <OtherInputs critImmune={critImmuneB} update={setCritImmuneB} variant='reactive'
                                fixedFaceToFace={fixedFaceToFace} updateFixedFaceToFace={setFixedFaceToFace}/>
+                  </>}
                 </Grid>
               </CardContent>
             </Card>
