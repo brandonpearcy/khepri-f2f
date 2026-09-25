@@ -177,7 +177,12 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
             }}
           >
             {factionIds.map((id) => (
-              <MenuItem key={id} value={id} sx={{gap: 1}}>{factionLogo(id, 18)}{factionName(id)}</MenuItem>
+              // Wrapper carries the gap: Select renders the selected item's children without MenuItem's sx.
+              <MenuItem key={id} value={id}>
+                <Box component="span" sx={{display: 'inline-flex', alignItems: 'center', gap: 1}}>
+                  {factionLogo(id, 18)}{factionName(id)}
+                </Box>
+              </MenuItem>
             ))}
           </SelectField>
         </Grid>
