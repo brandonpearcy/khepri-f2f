@@ -422,4 +422,11 @@ test('Spec-Ops charts are not applied (deferred)', () => {
   const up = resolveSelection(army, {...sel, upgrade: 1, ball: 0});
   assert.equal(up.profile.bs, base.profile.bs);
   assert.deepEqual(up.upgrades, []);
+  for (const p of group.profiles) {
+    const x = resolveSelection(army, {...sel, profileId: p.id});
+    const w = bsWeapons(x.option, army.weapons)[0];
+    const r = deriveInputs({active: {...x, weapon: w}, reactive: {...x, weapon: w}, rangeCm: 40});
+    // Once, even with Spec-Ops on both sides.
+    assert.equal(r.warnings.filter((m) => m === 'Spec-Ops upgrades and SpecBall not supported yet').length, 1, `${p.name}: ${r.warnings.join(' | ')}`);
+  }
 });

@@ -21,7 +21,10 @@ const NO_FIRETEAM = {A: 0, B: 0};
 // Matchup state shared by the unit picker card and the calculator columns
 // (weapon and Fireteam Purity live there). Army data loads once `enabled`.
 // Every valid matchup is pushed into the calculator through onApply.
-export default function useMatchup({enabled, calculate, onApply}) {
+// `initial` (from a share link, see matchupParams.js) seeds the selections;
+// with `keepCalcParams` the link's own calculator values (which may include
+// overrides) are kept instead of the first automatic update.
+export default function useMatchup({enabled, calculate, onApply, initial = null, keepCalcParams = false}) {
   const [army, setArmy] = useState(null);
   const [loadError, setLoadError] = useState(null);
   const loading = useRef(false);
@@ -36,12 +39,12 @@ export default function useMatchup({enabled, calculate, onApply}) {
       .catch((e) => setLoadError(e));
   }, [enabled]);
 
-  const [pickA, setPickA] = useState(EMPTY_SELECTION);
-  const [pickB, setPickB] = useState(EMPTY_SELECTION);
-  const [ftSize, setFtSizes] = useState(NO_FIRETEAM);
+  const [pickA, setPickA] = useState(() => initial?.A ?? EMPTY_SELECTION);
+  const [pickB, setPickB] = useState(() => initial?.B ?? EMPTY_SELECTION);
+  const [ftSize, setFtSizes] = useState(() => initial?.ftSize ?? NO_FIRETEAM);
   const selA = useMemo(() => ({...pickA, ftSize: ftSize.A}), [pickA, ftSize.A]);
   const selB = useMemo(() => ({...pickB, ftSize: ftSize.B}), [pickB, ftSize.B]);
-  const [rangeCm, setRangeCm] = useState(40);
+  const [rangeCm, setRangeCm] = useState(() => initial?.rangeCm ?? 40);
   // "Minify" folds the pickers away behind a one-line summary.
   const [collapsed, setCollapsed] = useState(false);
 
@@ -71,8 +74,14 @@ export default function useMatchup({enabled, calculate, onApply}) {
   // onApply is a new function each App render, so read it through a ref.
   const onApplyRef = useRef(onApply);
   onApplyRef.current = onApply;
+  const skipFirstApply = useRef(Boolean(initial) && keepCalcParams);
   useEffect(() => {
-    if (enabled && hasSelection && derived?.ok) onApplyRef.current(derived.inputs);
+    if (!(enabled && hasSelection && derived?.ok)) return;
+    if (skipFirstApply.current) {
+      skipFirstApply.current = false;
+      return;
+    }
+    onApplyRef.current(derived.inputs);
   }, [derived, enabled, hasSelection]);
 
   // "No ARO" only exists on the reactive side; drop it so the new active side

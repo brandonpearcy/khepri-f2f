@@ -44,12 +44,16 @@ import RangeInput from "./units/RangeInput.jsx";
 import CoverInput from "./units/CoverInput.jsx";
 import OverridesSection from "./units/OverridesSection.jsx";
 import useMatchup from "./units/useMatchup.js";
+import {decodeMatchup, encodeMatchup} from "./units/matchupParams.js";
+import {PARAM_KEYS} from "./units/previews.js";
 import {createF2fClient} from "./lib/f2fClient.js";
 import ModeTabs, {MODES} from "./componets/ModeTabs.jsx";
 
 export const themeAtom = atomWithStorage('selectedTheme', 'dark')
 // 'basic' = the original inputs only; 'matchup' = unit picker on top of them.
-export const modeAtom = atomWithStorage('calculatorMode', MODES.basic)
+// Read on init: the first render must already know the saved mode, or it would
+// write the default into the URL and overwrite the preference.
+export const modeAtom = atomWithStorage('calculatorMode', MODES.basic, undefined, {unstable_getOnInit: true})
 
 function App() {
   // App Status
@@ -64,11 +68,28 @@ function App() {
 
   // theme
   const [selectedTheme, ] = useAtom(themeAtom)
-  const [calcMode, setCalcMode] = useAtom(modeAtom)
+  const [storedMode, setStoredMode] = useAtom(modeAtom)
 
   // Search params
   let [searchParams, setSearchParams] = useSearchParams();
   let p = validateParams(searchParams);
+  // The URL as first opened; calculator and matchup params are cleared from the
+  // address bar once applied, so read share-link state from this copy.
+  const [initialParams] = useState(() => new URLSearchParams(searchParams));
+  const [initialMatchup] = useState(() => decodeMatchup(initialParams));
+
+  // Mode lives in the URL (?mode=basic|matchup) so links and back/forward
+  // keep it; a URL without one falls back to the saved preference.
+  const urlMode = Object.values(MODES).includes(searchParams.get('mode')) ? searchParams.get('mode') : null;
+  const calcMode = urlMode ?? storedMode;
+  useEffect(() => {
+    if (urlMode && urlMode !== storedMode) setStoredMode(urlMode);
+  }, [urlMode]);
+  // A tab switch is a new history entry, so Back returns to the other mode.
+  const setCalcMode = (mode) => {
+    setStoredMode(mode);
+    setSearchParams({mode});
+  };
 
   // Inputs Player A
   const [burstA, setBurstA] = useState(p.burstA);
@@ -110,7 +131,21 @@ function App() {
     });
   };
   const [showOverrides, setShowOverrides] = useState(false)
-  const matchup = useMatchup({enabled: calcMode === MODES.matchup, calculate: previewCalculate, onApply: applyInputs});
+  const matchup = useMatchup({
+    enabled: calcMode === MODES.matchup,
+    calculate: previewCalculate,
+    onApply: applyInputs,
+    initial: initialMatchup,
+    // A link with calculator values (maybe overridden by hand) keeps them.
+    keepCalcParams: PARAM_KEYS.some((k) => initialParams.has(k)),
+  });
+  // Extra share-link params: the mode always, the matchup picks in Matchup mode.
+  const shareParams = {
+    mode: calcMode,
+    ...(calcMode === MODES.matchup ? encodeMatchup({
+      selA: matchup.A.sel, selB: matchup.B.sel, ftSize: matchup.ftSize, rangeCm: matchup.rangeCm,
+    }) : {}),
+  };
 
   // Outputs
   const [f2fResults, setF2fResults] = useState(null);
@@ -203,7 +238,9 @@ function App() {
       setStatusMessage(`Done! Took ${msg.data.elapsed}ms to calculate all ${msg.data.totalRolls.toLocaleString()} possible rolls.`);
     } else if (msg.data.command === 'status'){
       if(msg.data.value === 'ready'){
-        rollDice()
+        // This handler is bound once at mount; use the latest rollDice so inputs
+        // set before the worker was ready (e.g. from a share link) are used.
+        rollDiceRef.current()
       }
     }
   }
@@ -231,7 +268,8 @@ function App() {
 
   useEffect( ()=> {
     rollDice();
-    setSearchParams();
+    // Drop any shared calculator params once applied, but keep the mode.
+    setSearchParams({mode: calcMode}, {replace: true});
   },[
     burstA, bonusBurstA, successValueA, damageA, armA, btsA, ammoA, contA, critImmuneA,
     burstB, bonusBurstB, successValueB, damageB, armB, btsB, ammoB, contB, critImmuneB,
@@ -239,6 +277,7 @@ function App() {
   ]);
 
 
+  const rollDiceRef = useRef(null);
   const rollDice = async () => {
     // get result from worker
     let parameters = {
@@ -250,12 +289,14 @@ function App() {
     }
     await workerRef?.current?.postMessage?.({command: 'calculate', data: parameters})
   };
+  rollDiceRef.current = rollDice;
 
   const addResultToCompareList = () => {
     if(any(propEq(f2fResults.id, 'id'))(savedResults)){
       console.log("Not adding, duplicate key")
     } else {
-      setSavedResults(prevState =>  clone([... prevState, f2fResults]));
+      // Snapshot the share params so the saved result's link stays correct.
+      setSavedResults(prevState =>  clone([... prevState, {...f2fResults, share: shareParams}]));
     }
   }
 
@@ -452,7 +493,7 @@ function App() {
           {/* Matchup mode: no result until both sides are fully chosen. */}
           {(showDerivedInputs || matchup.complete) && <Grid xs={12} sm={12} lg={4} xl={6} item>
             <FaceToFaceResultCard
-              f2fResults={f2fResults}
+              f2fResults={f2fResults && {...f2fResults, share: shareParams}}
               addToCompare={addResultToCompareList}
               changeName={updateResultTitle}
             />

@@ -15,6 +15,7 @@ export const SKILL = {
   LIMITED_COVER: 268,
   BS_ATTACK: 201,
   TEAM_OPS: 282,
+  SPEC_OPS: 281,
 };
 
 export const EQUIP = {
@@ -362,6 +363,10 @@ function unsupportedTraits(side) {
   return found;
 }
 
+// Spec-Ops trooper? Only the Initial profile lists the skill, so check the group.
+const isSpecOps = (side) =>
+  (side?.group?.profiles ?? []).some((p) => (p.skills ?? []).some((sk) => sk.id === SKILL.SPEC_OPS));
+
 function approximationWarnings(label, side) {
   const warnings = [];
   if (side?.weapon?.row && (side.weapon.row.props ?? []).includes('Non-lethal')) {
@@ -572,6 +577,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
   const unsupported = [...new Set([...unsupportedTraits(a), ...unsupportedTraits(b)])];
   if (unsupported.length > 0) warnings.push(`Support for ${unsupported.join(', ')} not implemented yet`);
   warnings.push(...approximationWarnings('Active', a), ...approximationWarnings('Reactive', b));
+  if (isSpecOps(a) || isSpecOps(b)) warnings.push('Spec-Ops upgrades and SpecBall not supported yet');
 
   return {inputs, ok: errors.length === 0 && !incomplete && (a !== null || b !== null), errors, warnings, notes};
 }
