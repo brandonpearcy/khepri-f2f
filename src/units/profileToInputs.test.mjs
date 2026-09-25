@@ -163,11 +163,12 @@ test('loadout extras and crit immunity', () => {
   assert.equal(r.inputs.critImmuneB, true);
 });
 
-test('out of range weapon blocks apply', () => {
+test('out of range weapon always fails: success value 0, no error', () => {
   const pistol = option([{id: 6, name: 'Heavy Pistol'}]);
   const r = deriveInputs({active: side(profile(), pistol, '6:'), reactive: side(profile(), combi, '1:'), rangeCm: 120});
-  assert.equal(r.ok, false);
-  assert.match(r.errors[0], /out of range/);
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.errors, []);
+  assert.equal(r.inputs.successValueA, 0);
 });
 
 test('templates ignore the +3 ARM/BTS from cover but still eat the -3 BS MOD', () => {
@@ -195,10 +196,10 @@ test('No Cover units get nothing from "in cover"', () => {
   assert.equal(normal.inputs.armB, 11);
 });
 
-test('unsupported traits are reported as notes', () => {
+test('unsupported traits are reported as warnings', () => {
   const p = profile({skills: [{id: 191, name: 'Surprise Attack', extra: ['-3']}, {id: 156, name: 'Marksmanship'}]});
   const r = deriveInputs({active: side(p, combi, '1:'), reactive: side(profile(), combi, '1:'), rangeCm: 40});
-  assert.ok(r.notes.some((n) => n === 'Warning: support for Surprise Attack, Marksmanship not implemented yet'), r.notes.join(' | '));
+  assert.ok(r.warnings.some((n) => n === 'Support for Surprise Attack, Marksmanship not implemented yet'), r.warnings.join(' | '));
 });
 
 test('Albedo penalises MSV and Marksmanship attackers only', () => {
@@ -303,7 +304,7 @@ test('fireteam size sets cumulative bonuses', () => {
 
   assert.deepEqual(matchupTraits(at(3)), ['+1SD']);
   assert.deepEqual(matchupTraits(at(4)), ['+1SD', 'BS+1']);
-  assert.ok(deriveInputs({active: at(5), reactive: at(1), rangeCm: 40}).notes.some((n) => n.includes('Sixth Sense')));
+  assert.ok(deriveInputs({active: at(5), reactive: at(1), rangeCm: 40}).warnings.some((n) => n.includes('Sixth Sense')));
 
   const flamer = option([{id: 3, name: 'Heavy Flamethrower'}]);
   const t = deriveInputs({active: {...side(profile(), flamer, '3:'), ftSize: 4}, reactive: at(1), rangeCm: 20});
@@ -381,4 +382,10 @@ test('BS Weapon (PH) / (WIP) roll against PH / WIP', () => {
   const x = resolveSelection(army, {unitId: polaris.id, factionId: f, groupId: group.id, optionId: o.id, weaponKey: grenades.key});
   const r = deriveInputs({active: x, reactive: null, rangeCm: 20}).inputs;
   assert.equal(r.successValueA, 16 + rangeModFor(grenades.row, 20));
+});
+
+test('a side without a weapon yet: no error shown, but not ready to apply', () => {
+  const r = deriveInputs({active: side(profile(), combi, null), reactive: side(profile(), combi, '1:'), rangeCm: 40});
+  assert.deepEqual(r.errors, []);
+  assert.equal(r.ok, false);
 });

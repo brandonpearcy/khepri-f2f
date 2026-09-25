@@ -47,14 +47,14 @@ test('reactive candidates use the active weapon as the opponent', () => {
   assert.notEqual(fromA.key, cands[0].key);
 });
 
-test('no params when the other side has no weapon or the weapon is out of range', () => {
+test('no params without an opposing weapon; out-of-range weapons preview as always failing', () => {
   const noWeapon = previewCandidates({army, side: 'A', selX: selA, selY: {...selB, weaponKey: null}, rangeCm: 40});
   assert.ok(noWeapon.length > 0);
   assert.ok(noWeapon.every((c) => c.params === null));
   // 24-32": Heavy Pistol (max 24") is out, Plasma Carbine (max 40") is in.
   const far = previewCandidates({army, side: 'A', selX: selA, selY: selB, rangeCm: 80});
   const pistol = far.find((c) => c.weaponKey === '107:');
-  assert.equal(pistol.params, null);
+  assert.equal(pistol.params.successValueA, 0);
   assert.equal(far.find((c) => c.weaponKey === '111:Hit Mode').params.successValueA, 10);
 });
 

@@ -1,8 +1,8 @@
-import {faRulerHorizontal} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {Box, Grid, InputLabel, Rating, Tooltip} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import {CONTROL_ROW_HEIGHT} from './layout.js';
+import RulerIcon from '../componets/RulerIcon.jsx';
 import {RANGE_BANDS} from './profileToInputs.js';
 
 // Each icon carries its band's upper limit in inches.
@@ -19,8 +19,10 @@ function BandIcon({value, children, ...other}) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          // Nudged down, clear of the tick marks.
+          pt: '0.2em',
           fontFamily: 'conthrax',
-          fontSize: '0.6rem',
+          fontSize: '0.7rem',
           fontWeight: 700,
           color: 'text.primary',
           pointerEvents: 'none',
@@ -43,8 +45,7 @@ function RangeInput({rangeCm, update, variant}) {
   const theme = useTheme();
   const colorMid = theme.palette[variant]['500'];
   const index = RANGE_BANDS.findIndex((b) => b.to === rangeCm);
-  // Rulers are wider than the Burst dice and there are seven; keep them tight.
-  const iconStyle = {padding: 1};
+  const iconSx = {px: '1px'};
   return (
     <>
       <Grid item xs={12} sx={{display: 'flex', justifyContent: 'left'}}>
@@ -53,17 +54,17 @@ function RangeInput({rangeCm, update, variant}) {
         </Tooltip>
       </Grid>
       {/* Indented to line up with the number boxes of the inputs below. */}
-      <Grid item xs={12} sx={{display: 'flex', justifyContent: 'left', alignItems: 'center', pl: 3}}>
+      <Grid item xs={12} sx={{display: 'flex', justifyContent: 'left', alignItems: 'center', pl: 3, height: CONTROL_ROW_HEIGHT}}>
         <Rating
           max={RANGE_BANDS.length}
-          sx={{fontSize: '1.6rem'}}
+          sx={{fontSize: '2.1rem'}}
           value={index + 1}
           // Re-clicking the current band would clear a Rating; a range always has a value.
           onChange={(e, n) => n && update(RANGE_BANDS[n - 1].to)}
           getLabelText={(n) => `Range up to ${RANGE_BANDS[n - 1].inches} inches`}
           IconContainerComponent={BandIcon}
-          icon={<FontAwesomeIcon fontSize="inherit" style={{...iconStyle, color: colorMid}} icon={faRulerHorizontal} />}
-          emptyIcon={<FontAwesomeIcon fontSize="inherit" style={{...iconStyle, opacity: 0.35}} icon={faRulerHorizontal} />}
+          icon={<RulerIcon fontSize="inherit" sx={{...iconSx, color: colorMid}} />}
+          emptyIcon={<RulerIcon fontSize="inherit" sx={{...iconSx, opacity: 0.35}} />}
         />
       </Grid>
     </>

@@ -8,6 +8,8 @@ export default function InlineEdit(props) {
   const initialValue = props.value;
   const variant = props.variant;
   const update = props.update;
+  // Optional, e.g. 'conthrax' to match the calculator's card titles.
+  const fontFamily = props.fontFamily;
 
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initialValue);
@@ -54,7 +56,7 @@ export default function InlineEdit(props) {
 
   return (
     <div style={{display: "flex", alignItems: "flex-start", flexGrow: 1}}>
-      <Typography variant={variant} display="inline" sx={{flexGrow: 1, textAlign: "left"}}>
+      <Typography variant={variant} display="inline" sx={{flexGrow: 1, textAlign: "left", fontFamily}}>
         {initialValue}
       </Typography>
       <IconButton size="small" onClick={startEdit}>

@@ -55,7 +55,7 @@ function UnitLoader({matchup}) {
   const resolvedB = matchup.B.resolved;
 
 
-  // Above the pickers when the columns stack.
+  // In the Active title row (top-right of the card) when the columns stack.
   const swapButton = (
     <Tooltip title="Swap active and reactive">
       <span>
@@ -124,11 +124,6 @@ function UnitLoader({matchup}) {
     <Card>
       <CardContent>
         <Grid container spacing={2}>
-          {army && (
-            <Grid item xs={12} sx={{display: {xs: 'flex', md: 'none'}, justifyContent: 'flex-end'}}>
-              {swapButton}
-            </Grid>
-          )}
           {loadError && (
             <Grid item xs={12}>
               <Alert severity="error">Could not load unit data: {String(loadError.message ?? loadError)}</Alert>
@@ -144,7 +139,13 @@ function UnitLoader({matchup}) {
               <Grid item xs={12}>
                 <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems="stretch">
                   <Box sx={{flex: 1, minWidth: 0}}>
-                    <UnitPicker army={army} onChange={matchup.A.setSel} value={matchup.A.sel} variant="active" />
+                    <UnitPicker
+                      army={army}
+                      onChange={matchup.A.setSel}
+                      value={matchup.A.sel}
+                      variant="active"
+                      headerAction={<Box sx={{display: {xs: 'block', md: 'none'}}}>{swapButton}</Box>}
+                    />
                   </Box>
                   <Box sx={{display: {xs: 'none', md: 'flex'}, alignItems: 'center', justifyContent: 'center', mx: 2}}>
                     {swapIconButton}
@@ -157,7 +158,7 @@ function UnitLoader({matchup}) {
               {hasSelection && derived && (
                 <Grid item xs={12}>
                   <Stack spacing={1}>
-                    {derived.errors.map((e) => (
+                    {[...derived.errors, ...derived.warnings].map((e) => (
                       <Alert key={e} severity="warning">{e}</Alert>
                     ))}
                     {derived.notes.map((n) => (

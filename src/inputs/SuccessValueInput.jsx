@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 
 function SuccessValueInput({successValue, update, variant, title, tooltip}){
-  const min = 1;
+  const min = 0; // 0 = always fails, no crit (e.g. out of range)
   const max = 30;
 
   const handleOnBlur = (newValue) => {

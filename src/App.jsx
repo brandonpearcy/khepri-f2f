@@ -41,6 +41,7 @@ import UnitLoader from "./units/UnitLoader.jsx";
 import FireteamPurityInput from "./units/FireteamPurityInput.jsx";
 import WeaponSelect from "./units/WeaponSelect.jsx";
 import RangeInput from "./units/RangeInput.jsx";
+import CoverInput from "./units/CoverInput.jsx";
 import OverridesSection from "./units/OverridesSection.jsx";
 import useMatchup from "./units/useMatchup.js";
 import {createF2fClient} from "./lib/f2fClient.js";
@@ -322,7 +323,18 @@ function App() {
   const showDerivedInputs = calcMode !== MODES.matchup
   // Raw value scales. In Matchup mode they sit in a collapsible "Overrides"
   // section (open/closed shared by both columns).
+  const burstInputA = <BurstInput burst={burstA} update={setBurstA} title="Burst"
+                                  tooltip="Final burst after bonuses (fire team, multiple combatants in CC, etc). You can
+                                  set Reactive burst to 0 to calculate unopposed shots by double clicking on the die or
+                                  typing 0 in the value box."/>
+  const burstInputB = <BurstInput burst={burstB} update={setBurstB} variant='reactive' title="Burst"
+                                  tooltip="Final burst after bonuses (fire team, multiple combatants in CC, etc). You can
+                                  set Reactive burst to 0 to calculate unopposed shots by double clicking on the die or
+                                  typing 0 in the value box."/>
+  // Matchup mode also offers Burst here: a trooper may split their shots
+  // between targets.
   const scalesA = <>
+    {!showDerivedInputs && burstInputA}
     {dtwVsDodge === false &&
       <SuccessValueInput successValue={successValueA} update={setSuccessValueA} title="Success Value"
                          tooltip="Target Success Value for player after all positive and negative mods
@@ -340,6 +352,7 @@ function App() {
     {ammoB === 'PLASMA' && <BTSInput bts={btsA} update={setBtsA}/>}
   </>
   const scalesB = <>
+    {!showDerivedInputs && burstInputB}
     {burstB !== 0 &&
       <SuccessValueInput successValue={successValueB} update={setSuccessValueB} variant='reactive'
                          title="Success Value"
@@ -382,13 +395,11 @@ function App() {
                   {!showDerivedInputs && <>
                     <WeaponSelect variant='active' matchup={matchup}/>
                     <RangeInput rangeCm={matchup.rangeCm} update={matchup.setRangeCm}/>
+                    <CoverInput variant='active' matchup={matchup}/>
                     <FireteamPurityInput value={matchup.ftSize.A} update={(n) => matchup.setFtSize('A', n)}/>
                   </>}
                   {showDerivedInputs && <>
-                  <BurstInput burst={burstA} update={setBurstA} title="Burst"
-                              tooltip="Final burst after bonuses (fire team, multiple combatants in CC, etc). You can
-                              set Reactive burst to 0 to calculate unopposed shots by double clicking on the die or
-                              typing 0 in the value box."/>
+                  {burstInputA}
                   <BurstInput burst={bonusBurstA} update={setBonusBurstA} role='bonus' title="Special dice"
                               tooltip="Additional dies that are added to the burst but cannot be kept. Only *burst* die
                               will be kept, but *burst* + *special dice* die will be rolled. Highest die will be kept.
@@ -415,14 +426,12 @@ function App() {
                   {!showDerivedInputs && <>
                     <WeaponSelect variant='reactive' matchup={matchup}/>
                     <RangeInput rangeCm={matchup.rangeCm} update={matchup.setRangeCm} variant='reactive'/>
+                    <CoverInput variant='reactive' matchup={matchup}/>
                     <FireteamPurityInput value={matchup.ftSize.B} update={(n) => matchup.setFtSize('B', n)}
                                          variant='reactive'/>
                   </>}
                   {showDerivedInputs && <>
-                  <BurstInput burst={burstB} update={setBurstB} variant='reactive' title="Burst"
-                              tooltip="Final burst after bonuses (fire team, multiple combatants in CC, etc). You can
-                              set Reactive burst to 0 to calculate unopposed shots by double clicking on the die or
-                              typing 0 in the value box."/>
+                  {burstInputB}
                   <BurstInput burst={bonusBurstB} update={setBonusBurstB} variant='reactive' role='bonus' title="Special dice"
                               tooltip="Additional dies that are added to the burst but cannot be kept. Only *burst* die
                               will be kept, but *burst* + *special dice* die will be rolled. Highest die will be kept.
@@ -440,14 +449,15 @@ function App() {
               </CardContent>
             </Card>
           </Grid>
-          <Grid xs={12} sm={12} lg={4} xl={6} item>
+          {/* Matchup mode: no result until both sides are fully chosen. */}
+          {(showDerivedInputs || matchup.complete) && <Grid xs={12} sm={12} lg={4} xl={6} item>
             <FaceToFaceResultCard
               f2fResults={f2fResults}
               addToCompare={addResultToCompareList}
               changeName={updateResultTitle}
             />
             <Typography variant="caption" color="text.secondary">{statusMessage}</Typography>
-          </Grid>
+          </Grid>}
           {savedResults.length > 0 && <Grid item xs={12}>
             <Stack justifyContent="center" direction="row">
             <Typography variant="h5">Saved Results</Typography>

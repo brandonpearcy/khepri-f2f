@@ -50,6 +50,8 @@ export default function useMatchup({enabled, calculate, onApply}) {
   );
 
   const hasSelection = Boolean(selA.unitId || selB.unitId);
+  // Both sides fully chosen (unit through weapon) and the matchup is valid.
+  const complete = Boolean(resolvedA?.weapon && resolvedB?.weapon && derived?.ok);
 
   // Wounds/order for every weapon option, given the other side's current pick.
   const candidatesA = useMemo(
@@ -97,6 +99,7 @@ export default function useMatchup({enabled, calculate, onApply}) {
     setCollapsed,
     derived,
     hasSelection,
+    complete,
     swapSides,
     reset,
     ftSize,

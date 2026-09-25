@@ -1,8 +1,6 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {
   Autocomplete,
-  Checkbox,
-  FormControlLabel,
   Grid,
   MenuItem,
   TextField,
@@ -10,7 +8,7 @@ import {
 } from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import {SKILL, bsWeapons, effectiveTraits, loadoutLabels, searchKey} from './profileToInputs.js';
+import {bsWeapons, loadoutLabels, searchKey} from './profileToInputs.js';
 import SelectField, {compactText} from './SelectField.jsx';
 import {EMPTY_SELECTION} from './useMatchup.js';
 
@@ -21,8 +19,8 @@ const filterOptions = (units, {inputValue}) => {
 };
 
 // Unit, faction, profile and loadout for one side. The weapon (auto-set to the
-// loadout's first BS weapon) is chosen in the calculator column: WeaponSelect.
-function UnitPicker({variant, army, value, onChange}) {
+// loadout's first BS weapon) and cover are set in the calculator column.
+function UnitPicker({variant, army, value, onChange, headerAction}) {
   const theme = useTheme();
   const color = variant === 'active' ? 'primary' : 'secondary';
   const headerColor = theme.palette[variant]['500'];
@@ -40,8 +38,6 @@ function UnitPicker({variant, army, value, onChange}) {
   const labels = useMemo(() => (group ? loadoutLabels(group, army.weapons) : []), [group, army.weapons]);
   const weapons = useMemo(() => (option ? bsWeapons(option, army.weapons) : []), [option, army.weapons]);
 
-  const noCover = Boolean(profile) && effectiveTraits(profile, option).skills.some((s) => s.id === SKILL.NO_COVER);
-
   const set = (patch) => onChange({...value, ...patch});
 
   const [inputValue, setInputValue] = useState(unit?.isc ?? '');
@@ -49,17 +45,15 @@ function UnitPicker({variant, army, value, onChange}) {
 
   // Defaults that need a state write: a single loadout, and the first BS weapon.
   useEffect(() => {
-    if (noCover && value.inCover) {
-      set({inCover: false});
-    } else if (group && !value.optionId && labels.length === 1) {
+    if (group && !value.optionId && labels.length === 1) {
       set({optionId: labels[0].id, weaponKey: null});
     } else if (option && !value.weaponKey && weapons.length > 0) {
       set({weaponKey: weapons[0].key});
     }
   });
 
-  // After picking a unit, focus and open the first select that still needs a
-  // choice. It may only exist after the next render, so retry until it does;
+  // After picking a unit, faction, profile group or stat profile, focus and
+  // open the next select that still needs a choice. It may only exist after the next render, so retry until it does;
   // stop once a loadout is set (the weapon is picked automatically).
   const rootRef = useRef(null);
   const [pendingFocus, setPendingFocus] = useState(false);
@@ -89,10 +83,11 @@ function UnitPicker({variant, army, value, onChange}) {
 
   return (
     <Grid container spacing={1.5} ref={rootRef}>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
         <Typography variant="h6" sx={{fontFamily: 'conthrax', color: headerColor}}>
           {variant === 'active' ? 'Active' : 'Reactive'}
         </Typography>
+        {headerAction}
       </Grid>
       <Grid item xs={12}>
         <Autocomplete
@@ -149,7 +144,10 @@ function UnitPicker({variant, army, value, onChange}) {
             {...fieldProps('faction')}
             color={color}
             value={factionId}
-            onChange={(id) => set({factionId: id, groupId: null, profileId: null, optionId: null, weaponKey: null})}
+            onChange={(id) => {
+              set({factionId: id, groupId: null, profileId: null, optionId: null, weaponKey: null});
+              setPendingFocus(true);
+            }}
           >
             {factionIds.map((id) => (
               <MenuItem key={id} value={id}>{factionName(id)}</MenuItem>
@@ -164,7 +162,10 @@ function UnitPicker({variant, army, value, onChange}) {
             {...fieldProps('group')}
             color={color}
             value={group?.id ?? null}
-            onChange={(id) => set({groupId: id, profileId: null, optionId: null, weaponKey: null})}
+            onChange={(id) => {
+              set({groupId: id, profileId: null, optionId: null, weaponKey: null});
+              setPendingFocus(true);
+            }}
           >
             {groups.map((g) => (
               <MenuItem key={g.id} value={g.id}>{g.isc ?? g.profiles[0]?.name ?? `Group ${g.id}`}</MenuItem>
@@ -179,7 +180,10 @@ function UnitPicker({variant, army, value, onChange}) {
             {...fieldProps('stat')}
             color={color}
             value={profile?.id ?? null}
-            onChange={(id) => set({profileId: id})}
+            onChange={(id) => {
+              set({profileId: id});
+              setPendingFocus(true);
+            }}
           >
             {profiles.map((p) => (
               <MenuItem key={p.id} value={p.id}>{p.name ?? `Profile ${p.id}`}</MenuItem>
@@ -203,23 +207,6 @@ function UnitPicker({variant, army, value, onChange}) {
           </SelectField>
         </Grid>
       )}
-      {unit && (
-        <Grid item xs={12} sx={{mt: -1}}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color={color}
-                checked={!noCover && value.inCover}
-                onChange={(e) => set({inCover: e.target.checked})}
-                sx={{py: 0.5}}
-              />
-            }
-            disabled={noCover}
-            label={noCover ? 'In cover (unit has No Cover)' : 'In cover'}
-            sx={{'& .MuiFormControlLabel-label': {fontSize: compactText.fontSize}}}
-          />
-        </Grid>
-      )}
     </Grid>
   );
 }
@@ -229,6 +216,8 @@ UnitPicker.propTypes = {
   army: PropTypes.object.isRequired,
   value: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  // Rendered at the right end of the title row (e.g. the Swap button).
+  headerAction: PropTypes.node,
 };
 
 export default UnitPicker;

@@ -98,7 +98,7 @@ function FaceToFaceResultCard(props) {
   return <Card>
     <CardContent>
       <Box sx={{display: "flex", flexDirection: "row", flexGrow: 1}}>
-        <InlineEdit sx={{flexGrow: 1}} variant="h6" value={title} update={updateTitle}/>
+        <InlineEdit sx={{flexGrow: 1}} variant="h6" fontFamily="conthrax" value={title} update={updateTitle}/>
       </Box>
     </CardContent>
     <CardMedia sx={{pl:2, pr:2}}>

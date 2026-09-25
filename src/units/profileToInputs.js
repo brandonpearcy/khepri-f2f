@@ -324,12 +324,12 @@ function unsupportedTraits(side) {
   return found;
 }
 
-function approximationNotes(label, side) {
-  const notes = [];
+function approximationWarnings(label, side) {
+  const warnings = [];
   if (side?.weapon?.row && (side.weapon.row.props ?? []).includes('Non-lethal')) {
-    notes.push(`Warning: ${label} ${side.weapon.row.name} is non-lethal; results shown as wounds`);
+    warnings.push(`${label}: ${side.weapon.row.name} is non-lethal; results shown as wounds`);
   }
-  return notes;
+  return warnings;
 }
 
 // Burst, SD and BS bonuses on a BS Attack, summed over the weapon's loadout
@@ -371,16 +371,18 @@ function attackInputs(x, y, rangeCm, side, errors, notes) {
   const label = side === 'A' ? 'Active' : 'Reactive';
   const {row, mods} = x.weapon;
   let rangeMod = rangeModFor(row, rangeCm);
-  if (rangeMod === null) {
-    errors.push(`${label}: ${row.name} is out of range at this distance`);
-    rangeMod = row.ranges?.[row.ranges.length - 1]?.mod ?? 0;
-  }
+  // Out of range: the attack still happens but always fails. A success value
+  // of 0 misses on every roll, with no crit.
+  const outOfRange = rangeMod === null;
+  if (outOfRange) rangeMod = 0;
   if (rangeMod === -6 && hasEquip(x.traits, EQUIP.X_VISOR)) rangeMod = -3;
   const mim = y ? mimetismMod(y.traits, x.traits) : 0;
   const albedo = y ? albedoMod(y.traits, x.traits) : 0;
   const cover = benefitsFromCover(y) || hasNanoscreen(y) ? -3 : 0;
   const bonus = attackBonuses(x);
-  const sv = clamp(LIMITS.successValue, attackStat(x.profile, row) + rangeMod + mim + albedo + cover + mods.sv + bonus.bs);
+  const sv = outOfRange
+    ? 0
+    : clamp(LIMITS.successValue, attackStat(x.profile, row) + rangeMod + mim + albedo + cover + mods.sv + bonus.bs);
 
   let burst = (row.burst ?? 1) + bonus.burst;
   if (side === 'B' && !keepsAroBurst(x)) burst = 1;
@@ -468,6 +470,8 @@ export function deriveInputs({active, reactive, rangeCm}) {
   const inputs = {};
   const errors = [];
   const notes = [];
+  // A side still waiting on its weapon: nothing to report, but not ready to apply.
+  let incomplete = false;
   const a = active?.profile ? active : null;
   const b = reactive?.profile ? reactive : null;
   const aTemplate = Boolean(a?.weapon?.row && isTemplate(a.weapon.row));
@@ -476,7 +480,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
 
   if (a) {
     if (!a.weapon) {
-      errors.push('Active: choose a weapon or Dodge');
+      incomplete = true;
     } else if (a.weapon.pseudo === 'dodge') {
       // The calculator only models templates against a dodging *reactive* trooper.
       if (bTemplate) errors.push('Active Dodge against a reactive template weapon is not supported');
@@ -487,7 +491,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
       inputs.contA = false;
       inputs.dtwVsDodge = false;
     } else if (a.weapon.pseudo) {
-      errors.push('Active: choose a BS weapon or Dodge');
+      incomplete = true; // e.g. "No ARO" carried over; the active side needs a real choice
     } else if (attackStat(a.profile, a.weapon.row) <= 0) {
       errors.push('Active: this profile cannot make BS attacks; pick Dodge');
     } else {
@@ -500,7 +504,7 @@ export function deriveInputs({active, reactive, rangeCm}) {
 
   if (b) {
     if (!b.weapon) {
-      errors.push('Reactive: choose a weapon, Dodge or No ARO');
+      incomplete = true;
     } else if (aTemplate || b.weapon.pseudo === 'dodge') {
       if (aTemplate && !b.weapon.pseudo) notes.push('Reactive: template weapon forces a Dodge');
       inputs.ammoB = 'DODGE';
@@ -521,11 +525,13 @@ export function deriveInputs({active, reactive, rangeCm}) {
   }
 
   if (a || b) inputs.fixedFaceToFace = false;
+  // Things the result may get wrong; shown as alerts but don't block the calculation.
+  const warnings = [];
   const unsupported = [...new Set([...unsupportedTraits(a), ...unsupportedTraits(b)])];
-  if (unsupported.length > 0) notes.push(`Warning: support for ${unsupported.join(', ')} not implemented yet`);
-  notes.push(...approximationNotes('active', a), ...approximationNotes('reactive', b));
+  if (unsupported.length > 0) warnings.push(`Support for ${unsupported.join(', ')} not implemented yet`);
+  warnings.push(...approximationWarnings('Active', a), ...approximationWarnings('Reactive', b));
 
-  return {inputs, ok: errors.length === 0 && (a !== null || b !== null), errors, notes};
+  return {inputs, ok: errors.length === 0 && !incomplete && (a !== null || b !== null), errors, warnings, notes};
 }
 
 // Lowercase, accent-free form for unit search: "Nøkken" -> "nokken". NFD

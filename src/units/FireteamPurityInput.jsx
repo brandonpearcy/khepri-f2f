@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {Grid, InputLabel, Rating, Tooltip} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import {CONTROL_ROW_HEIGHT} from './layout.js';
 import UncontrolledInput from '../componets/UncontrolledInput.jsx';
 import {FIRETEAM_MAX, FIRETEAM_MIN} from './profileToInputs.js';
 
@@ -20,7 +21,7 @@ function FireteamPurityInput({value, update, variant}) {
           <InputLabel>Fireteam Purity</InputLabel>
         </Tooltip>
       </Grid>
-      <Grid item xs={2} sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', p: 1}}>
+      <Grid item xs={2} sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', px: 1, height: CONTROL_ROW_HEIGHT}}>
         <UncontrolledInput
           key={value}
           value={value}
@@ -31,8 +32,8 @@ function FireteamPurityInput({value, update, variant}) {
           }}
         />
       </Grid>
-      <Grid item xs={1} />
-      <Grid item xs={9} sx={{display: 'flex', justifyContent: 'left', alignItems: 'center'}}>
+      <Grid item xs={1} sx={{height: CONTROL_ROW_HEIGHT}} />
+      <Grid item xs={9} sx={{display: 'flex', justifyContent: 'left', alignItems: 'center', height: CONTROL_ROW_HEIGHT}}>
         <Rating
           max={FIRETEAM_MAX}
           size="large"
