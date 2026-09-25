@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T17:19:49.856Z",
+ "generatedAt": "2026-09-25T18:10:22.072Z",
  "source": "https://api.corvusbelli.com/army (Corvus Belli, Infinity Army). Unofficial snapshot.",
  "factions": {
   "101": {
@@ -10050,6 +10050,189 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Dogged",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-6)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Contender (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/Marat",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 23,
+        "name": "E/Marat"
+       }
+      ]
+     },
+     {
+      "label": "Minelayer, Cybermine",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 56,
+        "name": "Minelayer"
+       },
+       {
+        "type": "weapon",
+        "id": 174,
+        "name": "Cybermine"
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Plasma Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine"
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "360º Visor, Biometric Visor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 113,
+        "name": "360º Visor"
+       },
+       {
+        "type": "equip",
+        "id": 184,
+        "name": "Biometric Visor"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -18058,6 +18241,197 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-2\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 5
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "CC+3, Natural Born Warrior",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 3
+       },
+       {
+        "type": "skill",
+        "id": 39,
+        "name": "Natural Born Warrior"
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Dogged",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "BS Attack (AP)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "AP"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Ohotnik (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 67,
+        "name": "Ohotnik",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Sixth Sense, Combat Instinct",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       },
+       {
+        "type": "skill",
+        "id": 262,
+        "name": "Combat Instinct"
+       }
+      ]
+     },
+     {
+      "label": "Minelayer, AP Mine",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 56,
+        "name": "Minelayer"
+       },
+       {
+        "type": "weapon",
+        "id": 199,
+        "name": "AP Mine"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "T2 Boarding Shotgun",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 27,
+        "name": "T2 Boarding Shotgun"
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Immunity (AP)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 162,
+        "name": "Immunity",
+        "extra": [
+         "AP"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Panzerfaust",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 68,
+        "name": "Panzerfaust"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -41598,6 +41972,141 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "PH+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "ph",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Vulkan Shotgun",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 81,
+        "name": "Vulkan Shotgun"
+       }
+      ]
+     },
+     {
+      "label": "Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Plasma Carbine (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Marksmanship",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 156,
+        "name": "Marksmanship"
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -51897,6 +52406,140 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-6)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Contender",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender"
+       }
+      ]
+     },
+     {
+      "label": "Minelayer, Cybermine",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 56,
+        "name": "Minelayer"
+       },
+       {
+        "type": "weapon",
+        "id": 174,
+        "name": "Cybermine"
+       }
+      ]
+     },
+     {
+      "label": "E/Marat",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 23,
+        "name": "E/Marat"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "No Wound Incapacitation",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 86,
+        "name": "No Wound Incapacitation"
+       }
+      ]
+     },
+     {
+      "label": "360º Visor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 113,
+        "name": "360º Visor"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -57542,6 +58185,183 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Dogged",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Minelayer, Shock Mine",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 56,
+        "name": "Minelayer"
+       },
+       {
+        "type": "weapon",
+        "id": 196,
+        "name": "Shock Mine"
+       }
+      ]
+     },
+     {
+      "label": "Sensor, 360º Visor",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 65,
+        "name": "Sensor"
+       },
+       {
+        "type": "equip",
+        "id": 113,
+        "name": "360º Visor"
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Plasma Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine"
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Flammenspeer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 82,
+        "name": "Flammenspeer"
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -57994,6 +58814,146 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "CC+6",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 6
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "Drop Bears",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 96,
+        "name": "Drop Bears"
+       }
+      ]
+     },
+     {
+      "label": "Assault Pistol",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 70,
+        "name": "Assault Pistol"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Martial Arts L3, DA CC Weapon (PS=6)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 21,
+        "name": "Martial Arts L3"
+       },
+       {
+        "type": "weapon",
+        "id": 11,
+        "name": "DA CC Weapon",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "WildParrot",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 182,
+        "name": "WildParrot"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -58648,6 +59608,190 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "PH+2, Drop Bears",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "ph",
+        "q": 2
+       },
+       {
+        "type": "weapon",
+        "id": 96,
+        "name": "Drop Bears"
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Dogged",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     },
+     {
+      "label": "BTS+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "Boarding Shotgun (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 26,
+        "name": "Boarding Shotgun",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Assault Pistol",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 70,
+        "name": "Assault Pistol"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "MULTI Pistol (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 189,
+        "name": "MULTI Pistol",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "WildParrot (Disposable(2))",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 182,
+        "name": "WildParrot",
+        "extra": [
+         "Disposable(2)"
+        ]
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -114519,6 +115663,153 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "CC+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "ARM+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Monofilament CC Weapon (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 9,
+        "name": "Monofilament CC Weapon",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Berserk (+3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 24,
+        "name": "Berserk",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Breaker Pistol (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 98,
+        "name": "Breaker Pistol",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Blitzen (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 14,
+        "name": "Blitzen",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Madtraps",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 150,
+        "name": "Madtraps"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -121912,6 +123203,179 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "E/Marat, Viral Mine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 23,
+        "name": "E/Marat"
+       },
+       {
+        "type": "weapon",
+        "id": 63,
+        "name": "Viral Mine"
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Viral Pistol (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 156,
+        "name": "Viral Pistol",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Contender (AP)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "AP"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Panzerfaust",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 68,
+        "name": "Panzerfaust"
+       }
+      ]
+     },
+     {
+      "label": "Marksmanship",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 156,
+        "name": "Marksmanship"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -127807,6 +129271,141 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "PH+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "ph",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Vulkan Shotgun",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 81,
+        "name": "Vulkan Shotgun"
+       }
+      ]
+     },
+     {
+      "label": "Viral Pistol (+2B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 156,
+        "name": "Viral Pistol",
+        "extra": [
+         "+2B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Pulzar (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 145,
+        "name": "Pulzar",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Regeneration (PH=14)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 62,
+        "name": "Regeneration",
+        "extra": [
+         "PH=14"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "PT: Endgame",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 203,
+        "name": "PT: Endgame"
+       }
+      ]
+     },
+     {
+      "label": "360º Visor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 113,
+        "name": "360º Visor"
+       }
+      ]
+     },
+     {
+      "label": "Viral Mine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 63,
+        "name": "Viral Mine"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -138549,6 +140148,146 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Contender (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/Marat",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 23,
+        "name": "E/Marat"
+       }
+      ]
+     },
+     {
+      "label": "Viral Pistol (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 156,
+        "name": "Viral Pistol",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Holoprojector, Surprise Attack (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 104,
+        "name": "Holoprojector"
+       },
+       {
+        "type": "skill",
+        "id": 191,
+        "name": "Surprise Attack",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Panzerfaust",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 68,
+        "name": "Panzerfaust"
+       }
+      ]
+     },
+     {
+      "label": "Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -144603,6 +146342,143 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "E/Marat",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 23,
+        "name": "E/Marat"
+       }
+      ]
+     },
+     {
+      "label": "Minelayer, E/M Mine",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 56,
+        "name": "Minelayer"
+       },
+       {
+        "type": "weapon",
+        "id": 197,
+        "name": "E/M Mine"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Drop Bears",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 96,
+        "name": "Drop Bears"
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "WildParrot",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 182,
+        "name": "WildParrot"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -148838,6 +150714,179 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Dogged",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "E/Marat",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 23,
+        "name": "E/Marat"
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Drop Bears",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 96,
+        "name": "Drop Bears"
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "WildParrot (Disposable(2))",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 182,
+        "name": "WildParrot",
+        "extra": [
+         "Disposable(2)"
+        ]
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -152350,6 +154399,155 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "CC+6",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 6
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "BS Attack (AP)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "AP"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Berserk (+3), Trench-Hammer",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 24,
+        "name": "Berserk",
+        "extra": [
+         "+3"
+        ]
+       },
+       {
+        "type": "weapon",
+        "id": 177,
+        "name": "Trench-Hammer"
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Ohotnik (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 67,
+        "name": "Ohotnik",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "T2 Boarding Shotgun",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 27,
+        "name": "T2 Boarding Shotgun"
+       }
+      ]
+     },
+     {
+      "label": "Grenades (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 44,
+        "name": "Grenades",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Immunity (AP)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 162,
+        "name": "Immunity",
+        "extra": [
+         "AP"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -164277,6 +166475,184 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "CC+3, Martial Arts L3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 3
+       },
+       {
+        "type": "skill",
+        "id": 21,
+        "name": "Martial Arts L3"
+       }
+      ]
+     },
+     {
+      "label": "ARM+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "BTS+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "Contender (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/Marat",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 23,
+        "name": "E/Marat"
+       }
+      ]
+     },
+     {
+      "label": "Warhorse",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 267,
+        "name": "Warhorse"
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Bangbomb (+4), Silenced Pistol",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 266,
+        "name": "Bangbomb",
+        "extra": [
+         "+4"
+        ]
+       },
+       {
+        "type": "weapon",
+        "id": 211,
+        "name": "Silenced Pistol"
+       }
+      ]
+     },
+     {
+      "label": "Plasma Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine"
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Deployable Repeater",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 111,
+        "name": "Deployable Repeater"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -167511,6 +169887,146 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "CC+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "PH+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "ph",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "ARM+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "Martial Arts L3, Stealth",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 21,
+        "name": "Martial Arts L3"
+       },
+       {
+        "type": "skill",
+        "id": 164,
+        "name": "Stealth"
+       }
+      ]
+     },
+     {
+      "label": "Contender (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Warhorse",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 267,
+        "name": "Warhorse"
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "360º Visor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 113,
+        "name": "360º Visor"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Bangbomb (+4)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 246,
+        "name": "Bangbomb",
+        "extra": [
+         "+4"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Plasma Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine"
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Deployable Repeater",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 111,
+        "name": "Deployable Repeater"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -217002,6 +219518,190 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Immunity (Critical)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 162,
+        "name": "Immunity",
+        "extra": [
+         "Critical"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BTS+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "BS Attack (SR-2)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "SR-2"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS Attack (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Vulkan Shotgun (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 81,
+        "name": "Vulkan Shotgun",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Minelayer, AP Mine",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 56,
+        "name": "Minelayer"
+       },
+       {
+        "type": "weapon",
+        "id": 199,
+        "name": "AP Mine"
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "Grenades (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 44,
+        "name": "Grenades",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     },
+     {
+      "label": "Dogged",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -226317,6 +229017,183 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Contender (AP)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "AP"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Boarding Shotgun (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 26,
+        "name": "Boarding Shotgun",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Heavy Riotstopper (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 188,
+        "name": "Heavy Riotstopper",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "BS Attack (SR-2)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "SR-2"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Deployable Repeater",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 111,
+        "name": "Deployable Repeater"
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Vulkan Shotgun (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 81,
+        "name": "Vulkan Shotgun",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -232055,6 +234932,179 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (-3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "PH+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "ph",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Dogged",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Vulkan Shotgun",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 81,
+        "name": "Vulkan Shotgun"
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Plasma Carbine (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Marksmanship",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 156,
+        "name": "Marksmanship"
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -234736,6 +237786,143 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "CC+6",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 6
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "CC Attack (-6), Monofilament CC Weapon",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 240,
+        "name": "CC Attack",
+        "extra": [
+         "-6"
+        ]
+       },
+       {
+        "type": "weapon",
+        "id": 9,
+        "name": "Monofilament CC Weapon"
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine"
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Sensor",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 65,
+        "name": "Sensor"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Blitzen",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 14,
+        "name": "Blitzen"
+       }
+      ]
+     },
+     {
+      "label": "Plasma Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine"
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -241899,6 +245086,192 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Combat Instinct, Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 262,
+        "name": "Combat Instinct"
+       },
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Minelayer, Crazykoala",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 56,
+        "name": "Minelayer"
+       },
+       {
+        "type": "weapon",
+        "id": 20,
+        "name": "Crazykoala"
+       }
+      ]
+     },
+     {
+      "label": "Regeneration (PH=14)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 62,
+        "name": "Regeneration",
+        "extra": [
+         "PH=14"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Akrylat-Kanone, Cybermine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 1,
+        "name": "Akrylat-Kanone"
+       },
+       {
+        "type": "weapon",
+        "id": 174,
+        "name": "Cybermine"
+       }
+      ]
+     },
+     {
+      "label": "FastPanda",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 240,
+        "name": "FastPanda"
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/M Grenades (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 47,
+        "name": "E/M Grenades",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -244526,6 +247899,184 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-6)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Contender (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Combat Instinct, Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 262,
+        "name": "Combat Instinct"
+       },
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Biometric Visor, Sensor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 184,
+        "name": "Biometric Visor"
+       },
+       {
+        "type": "skill",
+        "id": 65,
+        "name": "Sensor"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Adhesive Launcher Rifle (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 216,
+        "name": "Adhesive Launcher Rifle",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Madtraps",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 150,
+        "name": "Madtraps"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -277958,6 +281509,150 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Contender (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Boarding Shotgun (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 26,
+        "name": "Boarding Shotgun",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Dodge (+3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "BS Attack (SR-2)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "SR-2"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Boarding Pistol (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 212,
+        "name": "Boarding Pistol",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Deployable Repeater",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 111,
+        "name": "Deployable Repeater"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -294198,6 +297893,147 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "CC+6",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 6
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-6)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Morpho-scan",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 73,
+        "name": "Morpho-scan"
+       }
+      ]
+     },
+     {
+      "label": "Silenced Pistol (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 211,
+        "name": "Silenced Pistol",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Protheion (-6)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 72,
+        "name": "Protheion",
+        "extra": [
+         "-6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Regeneration (PH=15)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 62,
+        "name": "Regeneration",
+        "extra": [
+         "PH=15"
+        ]
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Monofilament CC Weapon (PS=7)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 9,
+        "name": "Monofilament CC Weapon",
+        "extra": [
+         "PS=7"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Martial Arts L2",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 20,
+        "name": "Martial Arts L2"
+       }
+      ]
+     },
+     {
+      "label": "Plasma Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine"
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -298125,6 +301961,200 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1, Immunity (Critical)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       },
+       {
+        "type": "skill",
+        "id": 162,
+        "name": "Immunity",
+        "extra": [
+         "Critical"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-6)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Morpho-scan, Monofilament CC Weapon (PS=7)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 73,
+        "name": "Morpho-scan"
+       },
+       {
+        "type": "weapon",
+        "id": 9,
+        "name": "Monofilament CC Weapon",
+        "extra": [
+         "PS=7"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Silenced Pistol (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 211,
+        "name": "Silenced Pistol",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Regeneration (PH=15)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 62,
+        "name": "Regeneration",
+        "extra": [
+         "PH=15"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Plasma Carbine",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 111,
+        "name": "Plasma Carbine"
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Monofilament Mine, Dazer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 62,
+        "name": "Monofilament Mine"
+       },
+       {
+        "type": "equip",
+        "id": 243,
+        "name": "Dazer"
+       }
+      ]
+     },
+     {
+      "label": "360º Visor, X Visor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 113,
+        "name": "360º Visor"
+       },
+       {
+        "type": "equip",
+        "id": 117,
+        "name": "X Visor"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -313199,6 +317229,143 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Contender (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 19,
+        "name": "Contender",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Combat Instinct",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 262,
+        "name": "Combat Instinct"
+       }
+      ]
+     },
+     {
+      "label": "Biometric Visor, Sensor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 184,
+        "name": "Biometric Visor"
+       },
+       {
+        "type": "skill",
+        "id": 65,
+        "name": "Sensor"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "Jammer",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 87,
+        "name": "Jammer"
+       }
+      ]
+     },
+     {
+      "label": "Madtraps",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 150,
+        "name": "Madtraps"
+       }
+      ]
+     },
+     {
+      "label": "Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -336290,6 +340457,187 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "PH+3, Dodge (-6)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "ph",
+        "q": 3
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "-6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "Warhorse",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 267,
+        "name": "Warhorse"
+       }
+      ]
+     },
+     {
+      "label": "Vulkan Shotgun (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 81,
+        "name": "Vulkan Shotgun",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Nanopulser (+2B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 65,
+        "name": "Nanopulser",
+        "extra": [
+         "+2B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Viral Pistol (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 156,
+        "name": "Viral Pistol",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "Deactivator",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 238,
+        "name": "Deactivator"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "E/Mitter",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 25,
+        "name": "E/Mitter"
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     },
+     {
+      "label": "PT: Endgame",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 203,
+        "name": "PT: Endgame"
+       }
+      ]
+     },
+     {
+      "label": "360º Visor, Biometric Visor",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 113,
+        "name": "360º Visor"
+       },
+       {
+        "type": "equip",
+        "id": 184,
+        "name": "Biometric Visor"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -340378,6 +344726,147 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "CC+6",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 6
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "EXP CC Weapon (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 8,
+        "name": "EXP CC Weapon",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS Attack (SR-2)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "SR-2"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS Attack (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 201,
+        "name": "BS Attack",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Vulkan Shotgun",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 81,
+        "name": "Vulkan Shotgun"
+       }
+      ]
+     },
+     {
+      "label": "Natural Born Warrior",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 39,
+        "name": "Natural Born Warrior"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Berserk (+3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 24,
+        "name": "Berserk",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Grenades (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 44,
+        "name": "Grenades",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "NCO",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 211,
+        "name": "NCO"
+       }
+      ]
+     },
+     {
+      "label": "Dogged",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 85,
+        "name": "Dogged"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -356418,6 +360907,147 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "PH+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "ph",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "WIP+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "wip",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "BTS+3",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bts",
+        "q": 3
+       }
+      ]
+     },
+     {
+      "label": "Dodge (+3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Mimetism (-3)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 28,
+        "name": "Mimetism",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Assault Pistol",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 70,
+        "name": "Assault Pistol"
+       }
+      ]
+     },
+     {
+      "label": "Regeneration (PH=14)",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 62,
+        "name": "Regeneration",
+        "extra": [
+         "PH=14"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Sixth Sense",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 67,
+        "name": "Sixth Sense"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Akrylat-Kanone",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 1,
+        "name": "Akrylat-Kanone"
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine (+1B)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine",
+        "extra": [
+         "+1B"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "E/M Grenades (+1SD)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 47,
+        "name": "E/M Grenades",
+        "extra": [
+         "+1SD"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ]
    }
   },
   {
@@ -379726,6 +384356,204 @@
       }
      ]
     }
+   },
+   "upgrades": {
+    "chart": [
+     {
+      "label": "MOV 6-4\", Dodge (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "move0",
+        "q": 15
+       },
+       {
+        "type": "stat",
+        "stat": "move1",
+        "q": 10
+       },
+       {
+        "type": "skill",
+        "id": 40,
+        "name": "Dodge",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "CC+3, Berserk (+3)",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "cc",
+        "q": 3
+       },
+       {
+        "type": "skill",
+        "id": 24,
+        "name": "Berserk",
+        "extra": [
+         "+3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "BS+1",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "bs",
+        "q": 1
+       }
+      ]
+     },
+     {
+      "label": "ARM+2",
+      "attrs": [
+       {
+        "type": "stat",
+        "stat": "arm",
+        "q": 2
+       }
+      ]
+     },
+     {
+      "label": "Albedo (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 183,
+        "name": "Albedo",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Monofilament CC Weapon (PS=6), Silenced Pistol (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 9,
+        "name": "Monofilament CC Weapon",
+        "extra": [
+         "PS=6"
+        ]
+       },
+       {
+        "type": "weapon",
+        "id": 211,
+        "name": "Silenced Pistol",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Tactical Awareness",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 213,
+        "name": "Tactical Awareness"
+       }
+      ]
+     },
+     {
+      "label": "MULTI Pistol (+1SD), Bangbomb (+4)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 189,
+        "name": "MULTI Pistol",
+        "extra": [
+         "+1SD"
+        ]
+       },
+       {
+        "type": "skill",
+        "id": 266,
+        "name": "Bangbomb",
+        "extra": [
+         "+4"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Marksmanship",
+      "attrs": [
+       {
+        "type": "skill",
+        "id": 156,
+        "name": "Marksmanship"
+       }
+      ]
+     },
+     {
+      "label": "Multispectral Visor L1",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 114,
+        "name": "Multispectral Visor L1"
+       }
+      ]
+     }
+    ],
+    "ball": [
+     {
+      "label": "Blitzen",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 14,
+        "name": "Blitzen"
+       }
+      ]
+     },
+     {
+      "label": "E/M Carbine (PS=6)",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 213,
+        "name": "E/M Carbine",
+        "extra": [
+         "PS=6"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "ECM: Hacker (-3)",
+      "attrs": [
+       {
+        "type": "equip",
+        "id": 241,
+        "name": "ECM: Hacker",
+        "extra": [
+         "-3"
+        ]
+       }
+      ]
+     },
+     {
+      "label": "Madtraps",
+      "attrs": [
+       {
+        "type": "weapon",
+        "id": 150,
+        "name": "Madtraps"
+       }
+      ]
+     }
+    ]
    }
   },
   {

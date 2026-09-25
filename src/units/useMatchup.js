@@ -11,6 +11,9 @@ export const EMPTY_SELECTION = {
   optionId: null,
   weaponKey: null,
   inCover: false,
+  // Team-Ops: index into unit.upgrades.chart / .ball, or null.
+  upgrade: null,
+  ball: null,
 };
 
 const NO_FIRETEAM = {A: 0, B: 0};

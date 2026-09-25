@@ -389,3 +389,37 @@ test('a side without a weapon yet: no error shown, but not ready to apply', () =
   assert.deepEqual(r.errors, []);
   assert.equal(r.ok, false);
 });
+
+test('Team-Ops upgrades: stat, equipment, TacBall weapon, unsupported weapon warning', () => {
+  const unit = byIsc('Combined Army Team-Ops');
+  const f = unit.inFactions[0];
+  const group = unit.byFaction[f].groups[0];
+  const o = group.options[0];
+  const idx = (list, label) => list.findIndex((i) => i.label === label);
+  const base = resolveSelection(army, {unitId: unit.id, factionId: f, groupId: group.id, optionId: o.id});
+  const pick = (upgrade, ball = null) =>
+    resolveSelection(army, {unitId: unit.id, factionId: f, groupId: group.id, optionId: o.id, upgrade, ball});
+
+  assert.equal(pick(idx(unit.upgrades.chart, 'BS+1')).profile.bs, base.profile.bs + 1);
+  assert.ok(pick(idx(unit.upgrades.chart, 'Multispectral Visor L1')).traits.equip.some((e) => e.name === 'Multispectral Visor L1'));
+
+  const tac = pick(null, idx(unit.upgrades.ball, 'Plasma Carbine'));
+  assert.ok(bsWeapons(tac.option, army.weapons).some((w) => w.name === 'Plasma Carbine'));
+  assert.deepEqual(matchupTraits(tac).includes('Plasma Carbine'), true);
+
+  const mines = pick(idx(unit.upgrades.chart, 'Minelayer, Shock Mine'));
+  const w = bsWeapons(mines.option, army.weapons)[0];
+  const r = deriveInputs({active: {...mines, weapon: w}, reactive: null, rangeCm: 40});
+  assert.ok(r.warnings.some((x) => x === 'Active: Shock Mine (upgrade) not supported by the calculator'), r.warnings.join(' | '));
+});
+
+test('Spec-Ops charts are not applied (deferred)', () => {
+  const unit = byIsc('Nexus-7 Spec-Ops');
+  const f = unit.inFactions[0];
+  const group = unit.byFaction[f].groups[0];
+  const sel = {unitId: unit.id, factionId: f, groupId: group.id, profileId: group.profiles[0].id, optionId: group.options[0].id};
+  const base = resolveSelection(army, sel);
+  const up = resolveSelection(army, {...sel, upgrade: 1, ball: 0});
+  assert.equal(up.profile.bs, base.profile.bs);
+  assert.deepEqual(up.upgrades, []);
+});

@@ -105,6 +105,43 @@ function refs(list, resolve, extraName) {
     });
 }
 
+// Spec-Ops / Team-Ops upgrade charts (`spectables`): `table` is the Spec-Ops or
+// Team-Ops chart, `specball` the SpecBall / TacBall chart. Each item is a few
+// attrs: a stat change ({stat, q}; MOV is move0/move1 in cm and replaces MOV,
+// the rest are deltas) or a skill / equip / weapon to add.
+const STAT_LABELS = {cc: 'CC', bs: 'BS', ph: 'PH', wip: 'WIP', arm: 'ARM', bts: 'BTS', w: 'W', s: 'S'};
+const inches = (cm) => (cm % 2.5 === 0 ? cm / 2.5 : `${cm}cm`);
+
+function upgradeLabel(attrs) {
+  const parts = [];
+  const move = attrs.filter((a) => a.type === 'stat' && a.stat.startsWith('move')).map((a) => inches(a.q));
+  if (move.length > 0) parts.push(`MOV ${move.join('-')}"`);
+  for (const a of attrs) {
+    if (a.type === 'stat' && !a.stat.startsWith('move')) parts.push(`${STAT_LABELS[a.stat] ?? a.stat.toUpperCase()}+${a.q}`);
+    else if (a.type !== 'stat') parts.push(a.extra ? `${a.name} (${a.extra.join(', ')})` : a.name);
+  }
+  return parts.join(', ');
+}
+
+function compactUpgrades(spectables, names) {
+  if (!spectables) return null;
+  const item = (it) => {
+    const attrs = (it.attrs ?? []).map((a) => {
+      if (a.type === 'stat') return {type: 'stat', stat: a.stat, q: a.q};
+      const resolve = names[a.type];
+      if (!resolve) return null;
+      const out = {type: a.type, id: a.id, name: resolve(a.id)};
+      const extra = (a.extra ?? []).map(names.extra).filter(Boolean);
+      if (extra.length > 0) out.extra = extra;
+      return out;
+    }).filter(Boolean);
+    return {label: upgradeLabel(attrs), attrs};
+  };
+  const chart = (spectables.table?.items ?? []).map(item);
+  const ball = (spectables.specball?.items ?? []).map(item);
+  return chart.length > 0 || ball.length > 0 ? {chart, ball} : null;
+}
+
 async function main() {
   const metadata = await get(`${API}/infinity/en/metadata`);
   const factionFiles = new Map();
@@ -207,6 +244,13 @@ async function main() {
         inFactions: [],
         byFaction: {},
       };
+      // Identical in every faction file the unit appears in; keep the first.
+      if (!existing) {
+        const upgrades = compactUpgrades(u.spectables, {
+          skill: skillName, equip: equipName, weapon: weaponName, extra: extraName,
+        });
+        if (upgrades) unit.upgrades = upgrades;
+      }
       unit.inFactions.push(fid);
       unit.byFaction[fid] = {groups};
       units.set(unitId, unit);

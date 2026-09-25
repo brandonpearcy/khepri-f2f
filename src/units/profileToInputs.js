@@ -14,6 +14,7 @@ export const SKILL = {
   NO_COVER: 264,
   LIMITED_COVER: 268,
   BS_ATTACK: 201,
+  TEAM_OPS: 282,
 };
 
 export const EQUIP = {
@@ -234,8 +235,35 @@ export function applyStatOverrides(profile, option) {
   return out;
 }
 
+// Team-Ops upgrades (unit.upgrades, from the Army "spectables"): one optional
+// pick from the Team-Ops chart and one optional TacBall item. Each item adds
+// stat deltas and/or skills, equipment and weapons. MOV changes are skipped:
+// the calculator doesn't use MOV. Spec-Ops charts are not applied yet.
+export function pickedUpgrades(unit, sel) {
+  const u = unit?.upgrades;
+  if (!u) return [];
+  return [u.chart?.[sel?.upgrade], u.ball?.[sel?.ball]].filter(Boolean);
+}
+
+export function applyUpgrades(profile, option, items) {
+  let p = {...profile, skills: [...(profile.skills ?? [])], equip: [...(profile.equip ?? [])]};
+  const weapons = [];
+  for (const item of items) {
+    for (const a of item.attrs ?? []) {
+      const ref = {id: a.id, name: a.name, ...(a.extra ? {extra: a.extra} : {})};
+      if (a.type === 'stat' && !a.stat.startsWith('move')) p = {...p, [a.stat]: (p[a.stat] ?? 0) + a.q};
+      else if (a.type === 'skill') p.skills.push(ref);
+      else if (a.type === 'equip') p.equip.push(ref);
+      else if (a.type === 'weapon') weapons.push(ref);
+    }
+  }
+  const opt = option && weapons.length > 0 ? {...option, weapons: [...(option.weapons ?? []), ...weapons]} : option;
+  return {profile: p, option: opt};
+}
+
 // Resolves a picker selection (ids) against the army data. The returned
-// profile has the loadout's stat overrides applied.
+// profile has the loadout's stat overrides and any Team-Ops upgrades applied;
+// the returned option includes upgrade weapons.
 export function resolveSelection(army, sel) {
   if (!army || !sel?.unitId) return null;
   const unit = army.units.find((u) => u.id === sel.unitId);
@@ -244,8 +272,17 @@ export function resolveSelection(army, sel) {
   const groups = factionId ? unit.byFaction[factionId]?.groups ?? null : null;
   const group = groups?.find((g) => g.id === sel.groupId) ?? (groups?.length === 1 ? groups[0] : null);
   const baseProfile = group?.profiles.find((p) => p.id === sel.profileId) ?? (group?.profiles.length === 1 ? group.profiles[0] : null);
-  const option = group?.options.find((o) => o.id === sel.optionId) ?? null;
-  const profile = baseProfile ? applyStatOverrides(baseProfile, option) : null;
+  const baseOption = group?.options.find((o) => o.id === sel.optionId) ?? null;
+  let profile = baseProfile ? applyStatOverrides(baseProfile, baseOption) : null;
+  let option = baseOption;
+  const teamOps = Boolean(profile) && hasSkill(effectiveTraits(profile, baseOption), SKILL.TEAM_OPS);
+  const upgrades = teamOps ? pickedUpgrades(unit, sel) : [];
+  if (upgrades.length > 0) ({profile, option} = applyUpgrades(profile, baseOption, upgrades));
+  // Upgrade weapons the calculator can't roll (e.g. mines), for a warning.
+  const unsupportedUpgradeWeapons = upgrades
+    .flatMap((u) => u.attrs.filter((x) => x.type === 'weapon'))
+    .filter((w) => !(army.weapons[w.id] ?? []).some(isBsAttackWeapon))
+    .map((w) => w.name);
   const traits = profile ? effectiveTraits(profile, option) : null;
   let weapon = null;
   if (option && profile && sel.weaponKey) {
@@ -255,6 +292,7 @@ export function resolveSelection(army, sel) {
   }
   return {
     unit, factionId, groups, group, profile, option, traits, weapon,
+    upgrades, unsupportedUpgradeWeapons,
     inCover: Boolean(sel.inCover),
     ftSize: sel.ftSize ?? 0,
   };
@@ -328,6 +366,9 @@ function approximationWarnings(label, side) {
   const warnings = [];
   if (side?.weapon?.row && (side.weapon.row.props ?? []).includes('Non-lethal')) {
     warnings.push(`${label}: ${side.weapon.row.name} is non-lethal; results shown as wounds`);
+  }
+  for (const name of side?.unsupportedUpgradeWeapons ?? []) {
+    warnings.push(`${label}: ${name} (upgrade) not supported by the calculator`);
   }
   return warnings;
 }
@@ -439,6 +480,7 @@ export function matchupTraits(side, role = 'A') {
     if (MODELED_EQUIP.includes(e.id)) out.push(traitLabel(e));
   }
   if (benefitsFromCover(side)) out.push('In cover');
+  out.push(...(side.upgrades ?? []).map((u) => u.label));
   out.push(...rollBonusLabels(side, role));
   return [...new Set(out)];
 }

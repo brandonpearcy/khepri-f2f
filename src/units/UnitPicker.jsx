@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import {bsWeapons, loadoutLabels, searchKey} from './profileToInputs.js';
+import {SKILL, bsWeapons, effectiveTraits, loadoutLabels, searchKey} from './profileToInputs.js';
 import SelectField, {compactText} from './SelectField.jsx';
 import {EMPTY_SELECTION} from './useMatchup.js';
 
@@ -37,6 +37,15 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
 
   const labels = useMemo(() => (group ? loadoutLabels(group, army.weapons) : []), [group, army.weapons]);
   const weapons = useMemo(() => (option ? bsWeapons(option, army.weapons) : []), [option, army.weapons]);
+  // Team-Ops troopers can take one chart upgrade and one TacBall item (both optional).
+  const teamOps = Boolean(profile) && Boolean(unit?.upgrades)
+    && effectiveTraits(profile, option).skills.some((s) => s.id === SKILL.TEAM_OPS);
+  // Changing upgrades can remove the weapon in use; fall back to the first one.
+  const setUpgrade = (patch) => {
+    const keep = !value.weaponKey || ['dodge', 'none'].includes(value.weaponKey)
+      || weapons.some((w) => w.key === value.weaponKey);
+    set({...patch, ...(keep ? {} : {weaponKey: null})});
+  };
 
   const set = (patch) => onChange({...value, ...patch});
 
@@ -145,7 +154,7 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
             color={color}
             value={factionId}
             onChange={(id) => {
-              set({factionId: id, groupId: null, profileId: null, optionId: null, weaponKey: null});
+              set({factionId: id, groupId: null, profileId: null, optionId: null, weaponKey: null, upgrade: null, ball: null});
               setPendingFocus(true);
             }}
           >
@@ -163,7 +172,7 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
             color={color}
             value={group?.id ?? null}
             onChange={(id) => {
-              set({groupId: id, profileId: null, optionId: null, weaponKey: null});
+              set({groupId: id, profileId: null, optionId: null, weaponKey: null, upgrade: null, ball: null});
               setPendingFocus(true);
             }}
           >
@@ -206,6 +215,38 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
             ))}
           </SelectField>
         </Grid>
+      )}
+      {teamOps && (
+        <>
+          <Grid item xs={12}>
+            <SelectField
+              label="Team-Ops upgrade"
+              color={color}
+              needsChoice={false}
+              value={value.upgrade ?? -1}
+              onChange={(i) => setUpgrade({upgrade: i === -1 ? null : i})}
+            >
+              <MenuItem value={-1}>None</MenuItem>
+              {unit.upgrades.chart.map((u, i) => (
+                <MenuItem key={u.label} value={i}>{u.label}</MenuItem>
+              ))}
+            </SelectField>
+          </Grid>
+          <Grid item xs={12}>
+            <SelectField
+              label="TacBall"
+              color={color}
+              needsChoice={false}
+              value={value.ball ?? -1}
+              onChange={(i) => setUpgrade({ball: i === -1 ? null : i})}
+            >
+              <MenuItem value={-1}>None</MenuItem>
+              {unit.upgrades.ball.map((u, i) => (
+                <MenuItem key={u.label} value={i}>{u.label}</MenuItem>
+              ))}
+            </SelectField>
+          </Grid>
+        </>
       )}
     </Grid>
   );
