@@ -331,7 +331,7 @@ test('BS Attack skill SD / B stack with Fireteam and loadout extras', () => {
 test('template burst comes from loadout extras (Dog-Warrior B2 Chain Rifle)', () => {
   const chain = option([{id: 3, name: 'Heavy Flamethrower', extra: ['+1B']}]);
   const x = {...side(profile(), chain, '3:'), ftSize: 4};
-  assert.match(bsWeapons(chain, W)[0].label, / · B2T · /);
+  assert.match(bsWeapons(chain, W)[0].label, / · B2 · /);
   const r = deriveInputs({active: x, reactive: side(profile(), combi, '1:'), rangeCm: 20}).inputs;
   assert.equal(r.burstA, 2);
   assert.equal(r.bonusBurstA, 0);

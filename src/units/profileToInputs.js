@@ -108,9 +108,9 @@ export function parseWeaponMods(extra = []) {
 const modeSuffix = (mode) => (mode ? ` (${mode.replace(/ Mode$/i, '')})` : '');
 
 export function weaponLabel(row, mods) {
-  const n = (row.burst ?? 1) + mods.burst;
-  // Templates can still fire more than one (e.g. a Dog-Warrior's B2 Chain Rifle).
-  const burst = isTemplate(row) ? (n > 1 ? `${n}T` : 'T') : n;
+  // Templates show their burst too (e.g. a Dog-Warrior's B2 Chain Rifle); the
+  // weapon menu marks them "template" in place of the range MOD.
+  const burst = (row.burst ?? 1) + mods.burst;
   const sd = mods.sd > 0 ? `+${mods.sd}SD` : '';
   const dmg = mods.ps ?? row.dmg;
   return `${row.name}${modeSuffix(row.mode)} · B${burst}${sd} · PS${dmg} · ${row.ammo ?? 'N'}`;

@@ -2,11 +2,13 @@ import {useMemo} from 'react';
 import {Grid, MenuItem, Typography} from '@mui/material';
 import PropTypes from 'prop-types';
 import {twoDecimalPlaces} from '../display/DataTransform.js';
-import {bsWeapons, fireteamBonuses, pseudoWeapons, rangeModFor} from './profileToInputs.js';
+import {bsWeapons, fireteamBonuses, isTemplate, pseudoWeapons, rangeModFor} from './profileToInputs.js';
 import SelectField from './SelectField.jsx';
 
 // "+3" / "-6" / "out of range" for the weapon at the shared distance.
+// Direct Templates auto-hit what they cover and take no range MODs.
 function rangeText(row, rangeCm) {
+  if (isTemplate(row)) return 'template';
   const mod = rangeModFor(row, rangeCm);
   if (mod === null) return 'out of range';
   return `${mod > 0 ? '+' : ''}${mod} range`;
