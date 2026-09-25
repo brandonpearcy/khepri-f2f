@@ -33,7 +33,17 @@ export default function useMatchup({enabled, calculate, onApply, initial = null,
     loading.current = true;
     import('../data/army.json')
       .then((m) => {
-        const units = m.default.units.map((u) => ({...u, search: searchKey(u.isc)}));
+        // List units by the short ISC ("Taguraida", not "Taguraida, JSA TAG
+        // Support Pilots"), keeping the full one where short names collide.
+        const short = (u) => u.isc.split(',')[0].trim();
+        const counts = new Map();
+        for (const u of m.default.units) counts.set(short(u), (counts.get(short(u)) ?? 0) + 1);
+        const units = m.default.units
+          .map((u) => {
+            const label = counts.get(short(u)) > 1 ? u.isc : short(u);
+            return {...u, label, search: searchKey(label)};
+          })
+          .sort((a, b) => a.label.localeCompare(b.label));
         setArmy({...m.default, units});
       })
       .catch((e) => setLoadError(e));

@@ -185,6 +185,7 @@ async function main() {
       name: clean(meta?.name) ?? `Faction ${fid}`,
       slug: meta?.slug ?? null,
       parent: meta?.parent ?? null,
+      logo: meta?.logo ?? null,
       version: file.version ?? null,
     };
 

@@ -7,6 +7,7 @@
    "name": "PanOceania",
    "slug": "panoceania",
    "parent": 101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/panoceania.svg",
    "version": "7.26246.158"
   },
   "102": {
@@ -14,6 +15,7 @@
    "name": "Shock Army of Acontecimento",
    "slug": "shock-army-of-acontecimento",
    "parent": 101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/shock-army-of-acontecimento.svg",
    "version": "7.26246.158"
   },
   "103": {
@@ -21,6 +23,7 @@
    "name": "Military Orders",
    "slug": "military-orders",
    "parent": 101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/military-orders.svg",
    "version": "7.26246.158"
   },
   "104": {
@@ -28,6 +31,7 @@
    "name": "Neoterran Capitaline Army",
    "slug": "neoterran-capitaline-army",
    "parent": 101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/neoterran-capitaline-army.svg",
    "version": "7.26246.158"
   },
   "105": {
@@ -35,6 +39,7 @@
    "name": "Varuna Immediate Reaction Division",
    "slug": "varuna-immediate-reaction-division",
    "parent": 101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/varuna-immediate-reaction-division.svg",
    "version": "7.26246.158"
   },
   "106": {
@@ -42,6 +47,7 @@
    "name": "Svalarheima's Winter Force",
    "slug": "svalarheima-s-winter-force",
    "parent": 101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/svalarheima-s-winter-force.svg",
    "version": "7.26246.158"
   },
   "107": {
@@ -49,6 +55,7 @@
    "name": "Kestrel Colonial Force",
    "slug": "kestrel-colonial-force",
    "parent": 101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/kestrel-colonial-force.svg",
    "version": "7.26246.158"
   },
   "201": {
@@ -56,6 +63,7 @@
    "name": "Yu Jing",
    "slug": "yu-jing",
    "parent": 201,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/yu-jing.svg",
    "version": "7.26246.158"
   },
   "202": {
@@ -63,6 +71,7 @@
    "name": "Imperial Service",
    "slug": "imperial-service",
    "parent": 201,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/imperial-service.svg",
    "version": "7.26246.158"
   },
   "204": {
@@ -70,6 +79,7 @@
    "name": "Invincible Army",
    "slug": "invincible-army",
    "parent": 201,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/invincible-army.svg",
    "version": "7.26246.158"
   },
   "205": {
@@ -77,6 +87,7 @@
    "name": "White Banner",
    "slug": "white-banner",
    "parent": 201,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/white-banner.svg",
    "version": "7.26246.158"
   },
   "301": {
@@ -84,6 +95,7 @@
    "name": "Ariadna",
    "slug": "ariadna",
    "parent": 301,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/ariadna.svg",
    "version": "7.26246.158"
   },
   "302": {
@@ -91,6 +103,7 @@
    "name": "Caledonian Highlander Army",
    "slug": "caledonian-highlander-army",
    "parent": 301,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/caledonian-highlander-army.svg",
    "version": "7.26246.158"
   },
   "303": {
@@ -98,6 +111,7 @@
    "name": "Force de Réponse Rapide Merovingienne",
    "slug": "force-de-reponse-rapide-merovingienne",
    "parent": 301,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/force-de-reponse-rapide-merovingienne.svg",
    "version": "7.26246.158"
   },
   "304": {
@@ -105,6 +119,7 @@
    "name": "USAriadna Ranger Force",
    "slug": "usariadna",
    "parent": 301,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/usariadna.svg",
    "version": "7.26246.158"
   },
   "305": {
@@ -112,6 +127,7 @@
    "name": "Tartary Army Corps",
    "slug": "tartary",
    "parent": 301,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/tartary.svg",
    "version": "7.26246.158"
   },
   "306": {
@@ -119,6 +135,7 @@
    "name": "Kosmoflot",
    "slug": "kosmoflot",
    "parent": 301,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/kosmoflot.svg",
    "version": "7.26246.158"
   },
   "401": {
@@ -126,6 +143,7 @@
    "name": "Haqqislam",
    "slug": "haqqislam",
    "parent": 401,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/haqqislam.svg",
    "version": "7.26246.158"
   },
   "402": {
@@ -133,6 +151,7 @@
    "name": "Hassassin Bahram",
    "slug": "hassassin-bahram",
    "parent": 401,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/hassassin-bahram.svg",
    "version": "7.26246.158"
   },
   "403": {
@@ -140,6 +159,7 @@
    "name": "Qapu Khalqi",
    "slug": "qapu-khalqi",
    "parent": 401,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/qapu-khalqi.svg",
    "version": "7.26246.158"
   },
   "404": {
@@ -147,6 +167,7 @@
    "name": "Ramah Taskforce",
    "slug": "ramah-taskforce",
    "parent": 401,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/ramah-taskforce.svg",
    "version": "7.26246.158"
   },
   "501": {
@@ -154,6 +175,7 @@
    "name": "Nomads",
    "slug": "nomads",
    "parent": 501,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/nomads.svg",
    "version": "7.26246.158"
   },
   "502": {
@@ -161,6 +183,7 @@
    "name": "Jurisdictional Command of Corregidor",
    "slug": "corregidor",
    "parent": 501,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/corregidor.svg",
    "version": "7.26246.158"
   },
   "503": {
@@ -168,6 +191,7 @@
    "name": "Jurisdictional Command of Bakunin",
    "slug": "bakunin",
    "parent": 501,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/bakunin.svg",
    "version": "7.26246.158"
   },
   "504": {
@@ -175,6 +199,7 @@
    "name": "Jurisdictional Command of Tunguska",
    "slug": "tunguska",
    "parent": 501,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/tunguska.svg",
    "version": "7.26246.158"
   },
   "601": {
@@ -182,6 +207,7 @@
    "name": "Combined Army",
    "slug": "combined-army",
    "parent": 601,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/combined-army.svg",
    "version": "7.26246.158"
   },
   "602": {
@@ -189,6 +215,7 @@
    "name": "Morat Aggression Forces",
    "slug": "morat",
    "parent": 601,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/morat.svg",
    "version": "7.26246.158"
   },
   "603": {
@@ -196,6 +223,7 @@
    "name": "Shasvastii Expeditionary Force",
    "slug": "shasvastii",
    "parent": 601,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/shasvastii.svg",
    "version": "7.26246.158"
   },
   "604": {
@@ -203,6 +231,7 @@
    "name": "Onyx Contact Force",
    "slug": "onyx",
    "parent": 601,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/onyx.svg",
    "version": "7.26246.158"
   },
   "605": {
@@ -210,6 +239,7 @@
    "name": "Next Wave",
    "slug": "next-wave",
    "parent": 601,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/next-wave.svg",
    "version": "7.26246.158"
   },
   "701": {
@@ -217,6 +247,7 @@
    "name": "Aleph",
    "slug": "aleph",
    "parent": 701,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/aleph.svg",
    "version": "7.26246.159"
   },
   "702": {
@@ -224,6 +255,7 @@
    "name": "Steel Phalanx",
    "slug": "steel-phalanx",
    "parent": 701,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/steel-phalanx.svg",
    "version": "7.26246.159"
   },
   "703": {
@@ -231,6 +263,7 @@
    "name": "Operations Subsection of the SSS",
    "slug": "operations",
    "parent": 701,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/operations.svg",
    "version": "7.26246.159"
   },
   "801": {
@@ -238,6 +271,7 @@
    "name": "Tohaa",
    "slug": "tohaa",
    "parent": 801,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/tohaa.svg",
    "version": "7.26246.159"
   },
   "901": {
@@ -245,6 +279,7 @@
    "name": "Non-Aligned Armies",
    "slug": "non-aligned-armies",
    "parent": 900,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/non-aligned-armies.svg",
    "version": "7.26246.159"
   },
   "902": {
@@ -252,6 +287,7 @@
    "name": "Druze Bayram Security",
    "slug": "druze",
    "parent": 901,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/druze.svg",
    "version": "7.26246.159"
   },
   "904": {
@@ -259,6 +295,7 @@
    "name": "Ikari Company",
    "slug": "ikari",
    "parent": 901,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/ikari.svg",
    "version": "7.26246.159"
   },
   "905": {
@@ -266,6 +303,7 @@
    "name": "Starco. Free Company of the Star",
    "slug": "starco-free-company-of-the-star",
    "parent": 901,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/starco-free-company-of-the-star.svg",
    "version": "7.26246.159"
   },
   "908": {
@@ -273,6 +311,7 @@
    "name": "Dahshat Company",
    "slug": "dahshat",
    "parent": 901,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/dahshat.svg",
    "version": "7.26246.159"
   },
   "909": {
@@ -280,6 +319,7 @@
    "name": "White Company",
    "slug": "white-company",
    "parent": 901,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/white-company.svg",
    "version": "7.26246.159"
   },
   "1001": {
@@ -287,6 +327,7 @@
    "name": "O-12",
    "slug": "o-12",
    "parent": 1001,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/o-12.svg",
    "version": "7.26246.159"
   },
   "1002": {
@@ -294,6 +335,7 @@
    "name": "Starmada, Bureau Aegis Naval Police Department",
    "slug": "starmada",
    "parent": 1001,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/starmada.svg",
    "version": "7.26246.159"
   },
   "1003": {
@@ -301,6 +343,7 @@
    "name": "Torchlight Brigade",
    "slug": "torchlight-brigade",
    "parent": 1001,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/torchlight-brigade.svg",
    "version": "7.26246.159"
   },
   "1101": {
@@ -308,6 +351,7 @@
    "name": "JSA",
    "slug": "jsa",
    "parent": 1101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/jsa.svg",
    "version": "7.26246.159"
   },
   "1102": {
@@ -315,6 +359,7 @@
    "name": "Shindenbutai",
    "slug": "shindenbutai",
    "parent": 1101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/shindenbutai.svg",
    "version": "7.26246.159"
   },
   "1103": {
@@ -322,6 +367,7 @@
    "name": "Ōban",
    "slug": "oban",
    "parent": 1101,
+   "logo": "https://assets.corvusbelli.net/army/img/logo/factions/oban.svg",
    "version": "7.26246.159"
   }
  },

@@ -1,6 +1,7 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {Fragment, useEffect, useMemo, useRef, useState} from 'react';
 import {
   Autocomplete,
+  Box,
   Grid,
   MenuItem,
   TextField,
@@ -12,7 +13,10 @@ import {SKILL, bsWeapons, effectiveTraits, loadoutLabels, searchKey} from './pro
 import SelectField, {compactText} from './SelectField.jsx';
 import {EMPTY_SELECTION} from './useMatchup.js';
 
-// Match the ISC only, ignoring case and accents (`search` is built at load).
+// Faction logos shown per unit row before collapsing the rest into "+N".
+const MAX_LOGOS = 4;
+
+// Match the short ISC only, ignoring case and accents (`label` and `search` are built at load).
 const filterOptions = (units, {inputValue}) => {
   const q = searchKey(inputValue.trim());
   return units.filter((u) => u.search.includes(q));
@@ -49,7 +53,7 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
 
   const set = (patch) => onChange({...value, ...patch});
 
-  const [inputValue, setInputValue] = useState(unit?.isc ?? '');
+  const [inputValue, setInputValue] = useState(unit?.label ?? '');
   const [open, setOpen] = useState(false);
 
   // Defaults that need a state write: a single loadout, and the first BS weapon.
@@ -86,9 +90,25 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
   });
 
   const factionName = (id) => army.factions[id]?.name ?? `Faction ${id}`;
-  // Units like Fusiliers sit in half a dozen factions; keep the row short.
-  const factionCaption = (ids) =>
-    ids.length > 2 ? `${factionName(ids[0])} +${ids.length - 1}` : ids.map(factionName).join(', ');
+  const factionLogo = (id, size) => {
+    const src = army.factions[id]?.logo;
+    return src
+      ? <img src={src} alt={factionName(id)} width={size} height={size} style={{objectFit: 'contain', flexShrink: 0}} />
+      : null;
+  };
+  // Units like Warcors sit in dozens of factions; keep the row short.
+  const factionLogos = (ids) => (
+    <Box
+      component="span"
+      title={ids.map(factionName).join(', ')}
+      sx={{ml: 'auto', pl: 1, display: 'inline-flex', alignItems: 'center', gap: 0.5}}
+    >
+      {ids.slice(0, MAX_LOGOS).map((id) => <Fragment key={id}>{factionLogo(id, 18)}</Fragment>)}
+      {ids.length > MAX_LOGOS && (
+        <Typography variant="caption" color="text.secondary">+{ids.length - MAX_LOGOS}</Typography>
+      )}
+    </Box>
+  );
 
   return (
     <Grid container spacing={1.5} ref={rootRef}>
@@ -107,7 +127,7 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
             onChange({...EMPTY_SELECTION, unitId: u?.id ?? null, inCover: value.inCover});
             if (u) setPendingFocus(true);
           }}
-          getOptionLabel={(u) => u.isc}
+          getOptionLabel={(u) => u.label}
           isOptionEqualToValue={(a, b) => a.id === b.id}
           filterOptions={filterOptions}
           autoHighlight
@@ -127,10 +147,8 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
             const {key, ...rest} = props;
             return (
               <li key={u.id} {...rest}>
-                {u.isc}
-                <Typography variant="caption" color="text.secondary" sx={{ml: 1}}>
-                  {factionCaption(u.inFactions)}
-                </Typography>
+                {u.label}
+                {factionLogos(u.inFactions)}
               </li>
             );
           }}
@@ -159,7 +177,7 @@ function UnitPicker({variant, army, value, onChange, headerAction}) {
             }}
           >
             {factionIds.map((id) => (
-              <MenuItem key={id} value={id}>{factionName(id)}</MenuItem>
+              <MenuItem key={id} value={id} sx={{gap: 1}}>{factionLogo(id, 18)}{factionName(id)}</MenuItem>
             ))}
           </SelectField>
         </Grid>
