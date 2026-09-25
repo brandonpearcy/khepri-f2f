@@ -71,8 +71,8 @@ export const isTemplate = (row) => (row?.props ?? []).some((p) => p.startsWith('
 
 export const isImpactTemplate = (row) => (row?.props ?? []).some((p) => p.startsWith('Impact Template'));
 
-// Direct and Impact (Blast mode) templates ignore the +3 ARM/BTS from cover
-// on the saving roll. The -3 BS MOD still applies to the attack roll.
+// Direct and Impact (Blast mode) templates ignore cover's +3 to the Saving
+// Roll. The -3 BS MOD still applies to the attack roll.
 export const ignoresCoverOnSaves = (row) => isTemplate(row) || isImpactTemplate(row);
 
 // Units with the No Cover skill (TAGs, bikes, Redeye...) get nothing from cover.
@@ -454,6 +454,8 @@ function defenseInputs(y, incoming, side) {
   const halve = saving.endsWith('/2') || Boolean(incoming?.mods?.forceAP);
   const apImmune = hasSkill(y.traits, SKILL.IMMUNITY, 'AP') || hasSkill(y.traits, SKILL.IMMUNITY, 'Enhanced');
   if (halve && !apImmune) base = Math.ceil(base / 2);
+  // Cover's +3 is a Saving Roll MOD, not ARM: add it after AP halving. The
+  // calculator saves on d20 <= PS + ARM, so this input is where the MOD goes.
   const templateIncoming = ignoresCoverOnSaves(incoming?.row);
   const coverSave = benefitsFromCover(y) && !templateIncoming ? 3 : 0;
   const nanoSave = hasNanoscreen(y) ? 3 : 0;
